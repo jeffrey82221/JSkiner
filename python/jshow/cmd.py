@@ -29,7 +29,7 @@ def run() -> None:
     with open(args.jsonl, 'r') as f:
         json_list = [x for x in f]
     
-    engine = InferenceEngine()
+    engine = InferenceEngine(args.nworkers)
     schema_str = engine.run(json_list)
     schema_str = autopep8.fix_code(schema_str)
     if args.verbose:
