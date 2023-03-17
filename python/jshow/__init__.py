@@ -1,7 +1,6 @@
-from .jshow import *
-from .main import InferenceEngine
+from .cmd import run
 
-__all__ = ['add']
+__all__ = ['run']
 
 __doc__ = jshow.__doc__
 if hasattr(jshow, "__all__"):

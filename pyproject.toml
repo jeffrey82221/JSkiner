@@ -16,3 +16,5 @@ classifiers = [
 [tool.maturin]
 python-source = "python"
 
+[project.scripts]
+jshow = "jshow.cmd:run"
