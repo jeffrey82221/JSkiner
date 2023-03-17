@@ -1,5 +1,5 @@
-examples/data/train.jsonl
-examples/data/train.jsonl.zip
+examples/data/test.jsonl
+examples/data/test.jsonl.zip
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
