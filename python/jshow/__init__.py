@@ -1,5 +1,5 @@
 from .jshow import *
-from .main import add
+from .main import InferenceEngine
 
 __all__ = ['add']
 
