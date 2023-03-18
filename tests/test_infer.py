@@ -1,6 +1,6 @@
 import pytest
-from jshow import InferenceEngine
-from jshow import *
+from jskiner import InferenceEngine
+from jskiner.schema import *
 
 
 @pytest.fixture

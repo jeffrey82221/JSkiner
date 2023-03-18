@@ -1,1 +1,1 @@
-jshow --jsonl data/small.jsonl --verbose 0 --out result/small.schema
+jskiner --jsonl data/small.jsonl --verbose 0 --out result/small.schema

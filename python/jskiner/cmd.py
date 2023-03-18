@@ -1,6 +1,6 @@
 import argparse
 import autopep8
-from .jshow import InferenceEngine
+from .jskiner import InferenceEngine
 
 def run() -> None:
     parser = argparse.ArgumentParser(

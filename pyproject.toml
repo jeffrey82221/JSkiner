@@ -3,7 +3,7 @@ requires = ["maturin>=0.14,<0.15"]
 build-backend = "maturin"
 
 [project]
-name = "jshow"
+name = "jskiner"
 requires-python = ">=3.7"
 version = "0.0.0"
 classifiers = [
@@ -17,4 +17,4 @@ classifiers = [
 python-source = "python"
 
 [project.scripts]
-jshow = "jshow.cmd:run"
+jskiner = "jskiner.cmd:run"

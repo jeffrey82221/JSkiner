@@ -1,4 +1,4 @@
-from .jshow import (
+from .jskiner import (
 	Int,
 	Float,
 	Str,
