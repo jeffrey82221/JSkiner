@@ -19,7 +19,7 @@ jobs:
          pip install types-requests
          mypy python --ignore-missing-imports
   integration-test:
-    needs: basic-checking
+    needs: code-check
     runs-on: ubuntu-latest
     strategy:
       matrix:
