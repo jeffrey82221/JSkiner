@@ -9,72 +9,56 @@ on:
     branches:
       - fix/cd
 jobs:
-  build-py37:
+  build-wheel:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        py-arg: ['3.7.16 3.7', '3.8.16 3.8', '3.9.16 3.9', '3.10.10 3.10']
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Build Py37 Wheel
+      - name: Build 
         run: |
           docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.7.16 3.7
-      - name: cache-wheel
+            /io/build-wheels.sh ${{ matrix.py-arg }}
+      - name: Cache
         uses: actions/upload-artifact@v2
         with:
-          name: py37_wheel
+          name: ${{ matrix.py-arg }} wheel
           path: dist/wheelhouse/*-manylinux*.whl
   deploy:
     runs-on: ubuntu-latest
-    needs: build-py37
+    needs: build-wheel
     steps:
-      - name: start_deploying
+      - name: start deploying
         uses: actions/checkout@v2
-      - name: load_wheel_py37
+      - name: load py37 wheel
         uses: actions/download-artifact@v2
         with: 
-          name: py37_wheel
-      - name: check_download
-        run: |
-         pwd
+          name: 3.7.16 3.7 wheel
+      - name: load py38 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.8.16 3.8 wheel
+      - name: load py39 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.9.16 3.9 wheel
+      - name: load py310 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.10.10 3.10 wheel
+      - name: move wheel
+        run: | 
+         mkdir dist
+         mv *.whl dist/
          ls
-      - name: Install Twine
-        run: |
-          pip install twine
-          pip install pexpect
+         ls dist
       - name: Upload Wheels
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
-          python -m twine upload dist/wheelhouse/*-manylinux*.whl
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build Py37 Wheel
-        run: |
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.7.16 3.7
-      - name: Build Py38 Wheel
-        run: |
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.8.16 3.8
-      - name: Build Py39 Wheel
-        run: |
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.9.16 3.9
-      - name: Build Py310 Wheel
-        run: |
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.10.10 3.10
-      - name: Install Twine
-        run: |
           pip install twine
           pip install pexpect
-      - name: Upload Wheels
-        env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
-        run: |
-          python -m twine upload dist/wheelhouse/*-manylinux*.whl
+          python -m twine upload dist/*-manylinux*.whl
