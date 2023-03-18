@@ -9,23 +9,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Build Py37 Wheel
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.7.16 3.7
+      - name: Build Py38 Wheel
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.8.16 3.8
+      - name: Build Py39 Wheel
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.9.16 3.9
+      - name: Build Py310 Wheel
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.10.10 3.10
       - name: Install Twine
         run: |
           pip install twine
           pip install pexpect
-      - name: Build and upload manylinux wheel
+      - name: Upload Wheels
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.7.16 3.7
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.8.16 3.8
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.9.16 3.9
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.10.10 3.10
           python -m twine upload dist/wheelhouse/*-manylinux*.whl
   download-and-test:
     runs-on: ubuntu-latest
@@ -33,7 +41,6 @@ jobs:
       matrix:
         # Run in all these versions of Python
         python-version: [3.7, 3.8, 3.9, 3.10]
-
     steps:
         # Checkout the latest code from the repo
       - name: Checkout repo
