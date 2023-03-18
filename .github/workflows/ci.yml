@@ -31,5 +31,9 @@ jobs:
         run: |
           cd examples
           ./test.sh
+          cd ..
+      - name: check version
+        run: |
+          python .github/check_version.py
       
       

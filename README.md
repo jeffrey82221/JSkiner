@@ -38,3 +38,13 @@ print(schema_str)
 - [X] move json schema inference rust code here
 - [X] add cmd.py tools for parsing .jsonl file to jshow
 - [ ] build the cicd pipeline using .workflow
+    - [X] ci
+    - [ ] cd
+
+```
+pip install twine
+pip install pexpect
+pip install build --upgrade
+python -m build
+twine upload dist/*
+```
