@@ -9,11 +9,8 @@ rpm -qa | grep -i python3-pip
 pip3 -V
 pip3 install --upgrade pip
 pip3 install -e .
-pip3 install twine
-pip3 install pexpect
 pip3 install build --upgrade
 python3 -m build
 cd dist
 ls
 cd ..
-echo $TWINE_USERNAME
