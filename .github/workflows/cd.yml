@@ -28,4 +28,4 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
-          twine upload dist/* --verbose 1
+          twine upload dist/* --verbose
