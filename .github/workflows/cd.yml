@@ -25,16 +25,20 @@ jobs:
   build-macos-m1-wheel:
     name: Build wheels on macos-11
     runs-on: macos-11
+    strategy:
+      matrix:
+        py-arg: ['cp37', 'cp38', 'cp39', 'cp310']
     steps:
       - uses: actions/checkout@v3
       - name: Build
         uses: pypa/cibuildwheel@v2.12.1
         env:
           CIBW_ARCHS_MACOS: x86_64 #arm64
+          CIBW_BUILD: ${{ matrix.py-arg }}-macosx_x86_64
       - name: Cache
         uses: actions/upload-artifact@v2
         with:
-          name: mac-x86-64-wheel
+          name: ${{ matrix.py-arg }}-macosx_x86_64
           path: dist/wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
@@ -58,10 +62,22 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           name: 3.10.10 3.10 wheel
-      - name: load mac m1 wheel
+      - name: load cp37-macosx_x86_64
         uses: actions/download-artifact@v2
         with:
-          name: mac-x86-64-wheel
+          name: cp37-macosx_x86_64
+      - name: load cp38-macosx_x86_64
+        uses: actions/download-artifact@v2
+        with:
+          name: cp38-macosx_x86_64
+      - name: load cp39-macosx_x86_64
+        uses: actions/download-artifact@v2
+        with:
+          name: cp39-macosx_x86_64
+      - name: load cp310-macosx_x86_64
+        uses: actions/download-artifact@v2
+        with:
+          name: cp310-macosx_x86_64
       - name: move wheel
         run: | 
          mkdir dist
