@@ -3,7 +3,7 @@ name: Run tests
 on: push
 
 jobs:
-  run-shell-command:
+  integration:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
