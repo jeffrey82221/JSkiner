@@ -35,4 +35,6 @@ cd ..
 python3.7 -m build
 cd dist
 ls
-cd ..
+# Repair wheel
+python3.7 -m pip3 install auditwheel
+auditwheel repair *.whl
