@@ -4,6 +4,9 @@ on:
     types: [closed]
     branches:
       - main
+  push:
+    branches:
+      - main
 jobs:
   deployment:
     runs-on: ubuntu-latest
@@ -17,11 +20,11 @@ jobs:
           pip install pexpect
           pip install build --upgrade
       - name: Build
-        if: github.event.pull_request.merged == true
+        if: github.ref == 'refs/heads/main'
         run: |
           python -m build
       - name: Deploy to pypi
-        if: github.event.pull_request.merged == true
+        if: github.ref == 'refs/heads/main'
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
