@@ -1,10 +1,10 @@
 cd io
-python -m pip3 install --upgrade pip
-pip3 install -e .
-pip3 install twine
-pip3 install pexpect
-pip3 install maturin
-pip3 install build --upgrade
+python -m pip install --upgrade pip
+python -m pip install -e .
+python -m pip install twine
+python -m pip install pexpect
+python -m pip install maturin
+python -m pip install build --upgrade
 python -m build
 cd dist
 ls
