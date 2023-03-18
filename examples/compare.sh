@@ -1,14 +1,11 @@
+rm data/huge.jsonl
 pip install jsonschema-inference
+for i in {1..100}; do cat data/big.jsonl >> data/huge.jsonl; done
 echo "start comparison..."
-echo "\n\n\nworker=1"
-time jsonschema-inference --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 1
-time jshow --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 1
-echo "\n\n\nworker=2"
-time jsonschema-inference --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 2
-time jshow --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 2
-echo "\n\n\nworker=4"
-time jsonschema-inference --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 4
-time jshow --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 4
-echo "\n\n\nworker=8"
-time jsonschema-inference --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 8
-time jshow --jsonl data/big.jsonl --verbose 0 --out result/big.schema --nworkers 8
+for i in 1 2 4 8;
+    do 
+        echo "nworkers=$i";
+        time jsonschema-inference --jsonl data/huge.jsonl --verbose 0 --out result/huge.schema --nworkers $i;
+        time jshow --jsonl data/huge.jsonl --verbose 0 --out result/huge.schema --nworkers $i;
+done
+rm data/huge.jsonl
