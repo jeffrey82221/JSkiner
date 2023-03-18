@@ -32,9 +32,9 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 #arm64
       - name: Cache
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: macos m1 wheel
+          name: mac-x86-64-wheel
           path: dist/wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
       - name: load mac m1 wheel
         uses: actions/download-artifact@v2
         with:
-          name: macos m1 wheel
+          name: mac-x86-64-wheel
       - name: move wheel
         run: | 
          mkdir dist
