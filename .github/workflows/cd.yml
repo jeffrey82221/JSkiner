@@ -1,16 +1,16 @@
 name: Publish Python distributions to PyPI
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - main
   push:
     branches:
-      - main
+      - fix/cd
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -23,6 +23,10 @@ jobs:
       - name: Build
         run: |
           python -m build
+      - name: Repair Wheel
+        run: |
+          pip install auditwheel
+          auditwheel repair dist/*.whl
       - name: Deploy to pypi
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
