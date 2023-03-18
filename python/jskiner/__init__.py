@@ -1,5 +1,6 @@
-from . import schema
-from .jskiner import InferenceEngine
+from . import jskiner
+from . import schema # noqa: F401
+from .jskiner import InferenceEngine # noqa: F401
 
 __doc__ = jskiner.__doc__
 if hasattr(jskiner, "__all__"):
