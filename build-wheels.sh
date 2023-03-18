@@ -1,6 +1,7 @@
 cd io
-apt update
-apt install python3-pip
+lsb_release -a
+apt-get update
+apt-get install -y python3-pip
 python -m pip install --upgrade pip
 python -m pip install -e .
 python -m pip install twine
