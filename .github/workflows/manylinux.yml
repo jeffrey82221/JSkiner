@@ -25,5 +25,6 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
+          ls
           docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash /io/build-wheels.sh
           python -m twine upload dist/*-manylinux*.whl
