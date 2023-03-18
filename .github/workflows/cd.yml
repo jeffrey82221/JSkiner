@@ -1,31 +1,60 @@
-name: Publish Python distributions to PyPI
+name: Continuous Deployment
 on:
   pull_request:
     types: [closed]
     branches:
       - main
-  push:
-    branches:
-      - main
 jobs:
-  deployment:
+  build-wheel:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        py-arg: ['3.7.16 3.7', '3.8.16 3.8', '3.9.16 3.9', '3.10.10 3.10']
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Build 
         run: |
-          python -m pip install --upgrade pip
-          pip install -e .
-          pip install twine
-          pip install pexpect
-          pip install build --upgrade
-      - name: Build
-        run: |
-          python -m build
-      - name: Deploy to pypi
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh ${{ matrix.py-arg }}
+      - name: Cache
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.py-arg }} wheel
+          path: dist/wheelhouse/*-manylinux*.whl
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-wheel
+    steps:
+      - name: start deploying
+        uses: actions/checkout@v2
+      - name: load py37 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.7.16 3.7 wheel
+      - name: load py38 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.8.16 3.8 wheel
+      - name: load py39 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.9.16 3.9 wheel
+      - name: load py310 wheel
+        uses: actions/download-artifact@v2
+        with: 
+          name: 3.10.10 3.10 wheel
+      - name: move wheel
+        run: | 
+         mkdir dist
+         mv *.whl dist/
+         ls
+         ls dist
+      - name: Upload Wheels
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
-          twine upload dist/* --verbose
+          pip install twine
+          pip install pexpect
+          python -m twine upload dist/*-manylinux*.whl
