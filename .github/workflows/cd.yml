@@ -9,6 +9,38 @@ on:
     branches:
       - fix/cd
 jobs:
+  build-py37:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Py37 Wheel
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.7.16 3.7
+      - name: cache-wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: py37_wheel
+          path: dist/wheelhouse/*-manylinux*.whl
+  deploy:
+    needs: build-py37
+    steps:
+      - name: deploy_to_pypi
+        uses: actions/checkout@v2
+        uses: actions/download-artifact@v2
+        with: 
+          name: py37_wheel
+      - name: Install Twine
+        run: |
+          pip install twine
+          pip install pexpect
+      - name: Upload Wheels
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
+        run: |
+          python -m twine upload dist/wheelhouse/*-manylinux*.whl
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
