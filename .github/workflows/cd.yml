@@ -1,9 +1,10 @@
 name: Continuous Deployment
-on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
+on: push
+#on:
+#  pull_request:
+#    types: [closed]
+#    branches:
+#      - main
 jobs:
   build-wheel:
     runs-on: ubuntu-latest
