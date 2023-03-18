@@ -6,19 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
-        # Add other dependencies required by your package
-        # For example, if you use numpy:
-        # numpy-version: [1.18, 1.19, 1.20]
     steps:
     - uses: actions/checkout@v2
     - name: Run image
       run: |
       docker run --rm -v $PWD:/io quay.io/pypa/manylinux2014_x86_64
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
     
