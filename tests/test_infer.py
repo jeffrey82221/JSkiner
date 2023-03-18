@@ -1,6 +1,6 @@
 import pytest
 from jskiner import InferenceEngine
-from jskiner.schema import *
+exec("from jskiner.schema import *")
 
 
 @pytest.fixture
