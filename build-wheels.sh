@@ -18,25 +18,25 @@ cd Python-$1
 ./configure --enable-optimizations 
 make altinstall 
 rm /usr/src/Python-$1.tgz 
-$2 -V 
+python$2 -V 
 # Install pip
 yum update -y 
 yum install python3-pip -y
 rpm -qa | grep -i python3-pip
 pip3 -V
 # Install python packages
-$2 -m pip3 install --upgrade pip
-$2 -m pip3 install -e .
-$2 -m pip3 install build --upgrade
+python$2 -m pip3 install --upgrade pip
+python$2 -m pip3 install -e .
+python$2 -m pip3 install build --upgrade
 # Test Package:
 cd /io
 cd examples
 ./test.sh
 cd ..
 # Build wheel
-$2 -m build
+python$2 -m build
 cd dist
 ls
 # Repair wheel
-$2 -m pip3 install auditwheel
+python$2 -m pip3 install auditwheel
 auditwheel repair *.whl
