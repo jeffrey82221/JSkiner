@@ -6,7 +6,7 @@ on: push
 #    branches:
 #      - main
 jobs:
-  build-linux-wheels:
+  build-wheel:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,7 +39,7 @@ jobs:
           path: dist/wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-linux-wheels, build-macos-m1-wheel]
+    needs: [build-wheel, build-macos-m1-wheel]
     steps:
       - name: start deploying
         uses: actions/checkout@v2
