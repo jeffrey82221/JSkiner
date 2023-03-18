@@ -1,15 +1,11 @@
 name: Continuous Integration
-#on: 
-#  pull_request:
-#    types: [opened, synchronize]
-#    branches:
-#      - main
-on:
-  push:
+on: 
+  pull_request:
+    types: [opened, synchronize]
     branches:
-      - fix/cd
+      - main
 jobs:
-  basic-checking:
+  code-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +18,7 @@ jobs:
          pip install mypy
          pip install types-requests
          mypy python --ignore-missing-imports
-  test-by-python-version:
+  integration-test:
     needs: basic-checking
     runs-on: ubuntu-latest
     strategy:

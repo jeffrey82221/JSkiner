@@ -33,6 +33,10 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           name: py37_wheel
+      - name: check_download
+        run: |
+         pwd
+         ls
       - name: Install Twine
         run: |
           pip install twine
