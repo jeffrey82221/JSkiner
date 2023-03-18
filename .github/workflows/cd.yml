@@ -24,6 +24,7 @@ jobs:
           name: py37_wheel
           path: dist/wheelhouse/*-manylinux*.whl
   deploy:
+    runs-on: ubuntu-latest
     needs: build-py37
     steps:
       - name: start_deploying
