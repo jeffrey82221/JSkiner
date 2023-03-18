@@ -19,5 +19,18 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
           docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
-            /io/build-wheels.sh 3.7.17 3.7
+            /io/build-wheels.sh 3.7.16 3.7
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.8.16 3.8
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.9.16 3.9
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.10.10 3.10
           python -m twine upload dist/wheelhouse/*-manylinux*.whl
+      - name: Download & Test
+        run: |
+          python --version
+          pip install jskiner
+          pip freeze | grep jskiner
+          cd examples
+          ./test.sh
