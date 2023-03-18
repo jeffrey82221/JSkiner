@@ -47,6 +47,7 @@ jobs:
         # Install pytest (you can use some other testing utility)
       - name: check version
         run: |
+          pip install requests
           python .github/check_version.py
       - name: run cargo test
         run : |
