@@ -30,7 +30,7 @@ jobs:
       - name: Build
         uses: pypa/cibuildwheel@v2.12.1
         env:
-          CIBW_ARCHS_MACOS: x86_64
+          CIBW_ARCHS_MACOS: x86_64 #arm64
       - name: Cache
         uses: actions/upload-artifact@v3
         with:
