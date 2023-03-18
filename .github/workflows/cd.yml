@@ -6,7 +6,7 @@ on:
 stages:
 - stage: deploy
   jobs:
-    build-and-deploy:
+    - build-and-deploy:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
@@ -39,7 +39,7 @@ stages:
             python -m twine upload dist/wheelhouse/*-manylinux*.whl
 - stage: test
   jobs:
-    download-and-test:
+    - download-and-test:
       runs-on: ubuntu-latest
       strategy:
         matrix:
