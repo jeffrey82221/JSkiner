@@ -9,16 +9,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install Rust, Maturin, and Twine
+      - name: Install Twine
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          export PATH="$HOME/.cargo/bin:$PATH"
-          pip install maturin
           pip install twine
           pip install pexpect
       - name: Build and upload manylinux wheel
@@ -26,6 +18,6 @@ jobs:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
         run: |
-          ls
-          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash /io/build-wheels.sh
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
+            /io/build-wheels.sh 3.7.17 3.7
           python -m twine upload dist/wheelhouse/*-manylinux*.whl
