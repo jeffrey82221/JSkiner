@@ -1,17 +1,17 @@
 from .jskiner import (
-	Int,
-	Float,
-	Str,
-	Non,
-	Bool,
-	Atomic,
-	Array,
-	Record,
-	FieldSet,
-	UniformRecord,
-	Union,
-	Optional,
-	Unknown
+    Int,
+    Float,
+    Str,
+    Non,
+    Bool,
+    Atomic,
+    Array,
+    Record,
+    FieldSet,
+    UniformRecord,
+    Union,
+    Optional,
+    Unknown
 )
 __all__ = [
     'Int',
