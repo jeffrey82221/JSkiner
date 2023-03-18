@@ -1,6 +1,6 @@
 # JSkiner 
 
-The is a python Json Schema Inference Engine with Rust's core. 
+The is a python **Js**on **Sch**ema **In**ference **E**ngine with **R**ust's core. 
 
 # Installation 
 
