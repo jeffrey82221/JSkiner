@@ -1,7 +1,11 @@
 cd io
 cat /etc/*-release
-yum install epel-release
-yum install python-pip3
+yum update -y 
+yum install epel-release -y
+yum update -y 
+yum install python3-pip -y
+rpm -qa | grep -i python3-pip
+pip3 -V
 python -m pip install --upgrade pip
 python -m pip install -e .
 python -m pip install twine
