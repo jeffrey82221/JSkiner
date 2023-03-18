@@ -1,5 +1,6 @@
 cd io
 cat /etc/*-release
+python --version
 yum update -y 
 yum install epel-release -y
 yum update -y 
