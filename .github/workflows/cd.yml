@@ -22,11 +22,14 @@ jobs:
           pip install build --upgrade
       - name: Build
         run: |
-          python3.9 -m build
+          python -m build
+          cd dist/
+          ls
+          cd ..
       - name: Repair Wheel
         run: |
           pip install auditwheel
-          auditwheel repair dist/*.whl
+          auditwheel repair --plat manylinux2014_x86_64 dist/*.whl
       - name: Deploy to pypi
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
