@@ -20,12 +20,6 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           export PATH="$HOME/.cargo/bin:$PATH"
           pip install maturin
-
-      - name: Build Rust components
-        run: |
-          cd rust_component/
-          maturin build --release --no-sdist
-
       - name: Build and upload manylinux wheel
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
