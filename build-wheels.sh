@@ -1,7 +1,7 @@
 cd io
 cat /etc/*-release
-apt-get update
-apt-get install python-pip3
+yum install epel-release
+yum install python-pip3
 python -m pip install --upgrade pip
 python -m pip install -e .
 python -m pip install twine
