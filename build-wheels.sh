@@ -1,6 +1,6 @@
 cd io
-python -m venv venv
-source venv/bin/activate
+apt update
+apt install python3-pip
 python -m pip install --upgrade pip
 python -m pip install -e .
 python -m pip install twine
