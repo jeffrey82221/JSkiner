@@ -1,14 +1,35 @@
-name: Build manylinux wheel
+name: Build and deploy to PyPI
 on:
   push:
     branches:
       - fix/cd
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run image
-      run: |
-      docker run --rm -v $PWD:/io quay.io/pypa/manylinux2014_x86_64
-    
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Rust and Maturin
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          export PATH="$HOME/.cargo/bin:$PATH"
+          pip install maturin
+
+      - name: Build Rust components
+        run: |
+          cd rust_component/
+          maturin build --release --no-sdist
+
+      - name: Build and upload manylinux wheel
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
+        run: |
+          docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash /io/build-wheels.sh
+          python -m twine upload dist/*-manylinux*.whl
