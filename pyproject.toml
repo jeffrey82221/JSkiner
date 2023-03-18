@@ -11,7 +11,9 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
-
+dependencies = [
+  'autopep8'
+]
 
 [tool.maturin]
 python-source = "python"
