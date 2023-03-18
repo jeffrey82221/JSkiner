@@ -26,8 +26,9 @@ jobs:
   deploy:
     needs: build-py37
     steps:
-      - name: deploy_to_pypi
+      - name: start_deploying
         uses: actions/checkout@v2
+      - name: load_wheel_py37
         uses: actions/download-artifact@v2
         with: 
           name: py37_wheel
