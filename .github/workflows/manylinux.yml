@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.9]
         # Add other dependencies required by your package
         # For example, if you use numpy:
         # numpy-version: [1.18, 1.19, 1.20]
@@ -28,3 +28,10 @@ jobs:
     - name: Build manylinux wheel
       run: |
         docker run --rm -v $PWD:/io quay.io/pypa/manylinux2014_x86_64 /io/.github/scripts/build_wheel.sh
+    - name: Install upload dependencies
+      run: |
+        pip install -e .
+        pip install twine
+        pip install pexpect
+        pip install maturin
+        pip install build --upgrade
