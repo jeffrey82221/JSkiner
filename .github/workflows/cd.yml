@@ -1,12 +1,15 @@
 name: Continuous Deployment
-on: push
+on: 
+  push:
+    branches:
+      - feature/support-mac
 #on:
 #  pull_request:
 #    types: [closed]
 #    branches:
 #      - main
 jobs:
-  build-wheel:
+  build-linux-wheels:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,7 +42,7 @@ jobs:
           path: dist/wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-wheel, build-macos-m1-wheel]
+    needs: [build-linux-wheels, build-macos-m1-wheel]
     steps:
       - name: start deploying
         uses: actions/checkout@v2
