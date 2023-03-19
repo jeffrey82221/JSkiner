@@ -7,6 +7,7 @@ on: push
 #      - main
 jobs:
   build-linux-wheels:
+    name: Build Linux wheels
     runs-on: ubuntu-latest
     strategy:
       matrix:
