@@ -32,12 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build
+        if: ${{ matrix.py-arg }}-${{ matrix.os-arg }} != 'cp37-arm64'
         uses: pypa/cibuildwheel@v2.12.1
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.os-arg }} 
           CIBW_BUILD: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
-          CIBW_SKIP: cp37-macosx_arm64
       - name: Cache
+        if: ${{ matrix.py-arg }}-${{ matrix.os-arg }} != 'cp37-arm64'
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
