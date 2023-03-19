@@ -126,4 +126,4 @@ jobs:
         run: |
           pip install twine
           pip install pexpect
-          python -m twine upload dist/*-manylinux*.whl
+          python -m twine upload dist/*.whl
