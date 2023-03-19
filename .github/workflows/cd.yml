@@ -1,10 +1,9 @@
 name: Continuous Deployment
-on: push
-#on:
-#  pull_request:
-#    types: [closed]
-#    branches:
-#      - main
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 jobs:
   build-linux-wheels:
     name: Build Linux wheels
