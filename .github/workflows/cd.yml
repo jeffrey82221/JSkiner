@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         py-arg: ['cp37', 'cp38', 'cp39', 'cp310']
-        os-arg: ['x86_64'] #arm64
+        os-arg: ['x86_64', 'arm64'] #arm64
     steps:
       - uses: actions/checkout@v3
       - name: Build
@@ -36,11 +36,12 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.os-arg }} 
           CIBW_BUILD: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
+          CIBW_SKIP: cp37-macosx_arm64
       - name: Cache
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
-          path: dist/wheelhouse/*.whl
+          path: wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
     needs: [build-linux-wheels, build-macos-m1-wheel]
