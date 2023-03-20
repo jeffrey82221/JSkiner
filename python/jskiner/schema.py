@@ -26,7 +26,7 @@ def convert_py_2_rust(arg):
     return arg
 
 
-def code_gen(class_name):
+def code_gen(class_name):  # noqa: E704
     return f"""
 class {class_name}:
     def __init__(self, *args):
