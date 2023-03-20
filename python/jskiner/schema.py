@@ -28,11 +28,11 @@ def convert_py_2_rust(arg):
 
 def code_gen(class_name):
     """
-    Arg: 
+    Arg:
         - class_name: The name of the python schema class
     Return:
         - class_define_code: Python code defining a python class that
-            warps the schema class defined in lib.rs into pure python 
+            warps the schema class defined in lib.rs into pure python
             schema object.
     """
     class_define_code = f"""
