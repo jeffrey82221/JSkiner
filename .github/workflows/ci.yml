@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: check version
+        run: |
+          pip install requests
+          python .github/check_version.py
       - name: flake8 checking
         run: |
          pip install flake8
@@ -41,10 +45,6 @@ jobs:
       - name: Install package
         run: pip install -e .
         # Install pytest (you can use some other testing utility)
-      - name: check version
-        run: |
-          pip install requests
-          python .github/check_version.py
       - name: run cargo test
         run : |
          cargo test
