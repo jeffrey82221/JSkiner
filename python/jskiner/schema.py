@@ -26,7 +26,8 @@ def convert_py_2_rust(arg):
     return arg
 
 
-def code_gen(class_name): return f"""
+def code_gen(class_name):
+    return f"""
 class {class_name}:
     def __init__(self, *args):
         if len(args) == 1:
