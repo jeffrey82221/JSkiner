@@ -27,7 +27,19 @@ from jskiner import InferenceEngine
 cpu_cnt = 16
 engine = InferenceEngine(cpu_cnt)
 json_string_list = ["1", "1.2", "null", "{\"a\": 1}"]
-schema_str = engine.run(json_string_list)
-print(schema_str)
+schema = engine.run(json_string_list)
+schema
 ```
->> 'Union({Atomic(Float()), Atomic(Int()), Atomic(Non()), Record({"a": Atomic(Int())})})'
+>> Union({Atomic(Float()), Atomic(Int()), Atomic(Non()), Record({"a": Atomic(Int())})})
+
+## Calculate the Union of a List of Schema 
+
+```python
+from jskiner import InferenceEngine
+from jskiner.schema import Atomic, Int, Non
+cpu_cnt = 16
+engine = InferenceEngine(cpu_cnt)
+schema = engine.run([Atomic(Int()), Atomic(Non)])
+schema
+```
+>> Optional(Atomic(Int()))
