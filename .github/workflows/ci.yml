@@ -9,11 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: check version
-        run: |
-          pip install -e .
-          pip install requests
-          python .github/check_version.py
       - name: flake8 checking
         run: |
          pip install flake8
@@ -60,5 +55,9 @@ jobs:
         run: |
           cd examples
           ./test.sh
+      - name: check version
+        run: |
+          pip install requests
+          python .github/check_version.py
           
       
