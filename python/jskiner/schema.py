@@ -26,8 +26,16 @@ def convert_py_2_rust(arg):
     return arg
 
 
-def code_gen(class_name):  # noqa: E704
-    return f"""
+def code_gen(class_name):
+    """
+    Arg: 
+        - class_name: The name of the python schema class
+    Return:
+        - class_define_code: Python code defining a python class that
+            warps the schema class defined in lib.rs into pure python 
+            schema object.
+    """
+    class_define_code = f"""
 class {class_name}:
     def __init__(self, *args):
         if len(args) == 1:
@@ -49,6 +57,7 @@ class {class_name}:
         engine = jskiner.InferenceEngine(1)
         return eval(engine.reduce([self.rc, other.rc]))
 """
+    return class_define_code
 
 
 for class_name in schema_names:
