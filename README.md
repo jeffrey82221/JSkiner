@@ -43,3 +43,11 @@ schema = engine.run([Atomic(Int()), Atomic(Non)])
 schema
 ```
 >> Optional(Atomic(Int()))
+
+## Using | Operation between Two Schema
+```python
+from jskiner import Atomic, Int, Non
+schema = Atomic(Int()) | Atomic(Non())
+schema
+```
+>> Optional(Atomic(Int()))
