@@ -1,4 +1,4 @@
-from . import jskiner
+from . import jskiner  # noqa: F401
 schema_names = [
     'Int',
     'Float',
