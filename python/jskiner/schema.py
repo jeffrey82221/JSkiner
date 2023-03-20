@@ -44,6 +44,9 @@ class {class_name}:
         return self.__repr__() == other.__repr__()
     def __hash__(self):
         return hash(self.__repr__())
+    def __or__(self, other):
+        engine = jskiner.InferenceEngine(1)
+        return eval(engine.reduce([self.rc, other.rc]))
 """
 
 

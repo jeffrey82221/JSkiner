@@ -27,7 +27,6 @@ impl InferenceEngine {
             Some(val) => val as usize,
             _ => num_cpus::get()
         };
-        println!("Thread Count: {}", set_cnt);
         Ok(InferenceEngine { rust_obj: RustInferenceEngine::new(set_cnt)})
     }
     fn run(&self, batch: &PyList) -> String {
