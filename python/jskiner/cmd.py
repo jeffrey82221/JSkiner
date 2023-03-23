@@ -1,5 +1,4 @@
 import argparse
-import autopep8
 from .jskiner import InferenceEngine
 
 
@@ -32,7 +31,6 @@ def run() -> None:
 
     engine = InferenceEngine(args.nworkers)
     schema_str = engine.run(json_list)
-    schema_str = autopep8.fix_code(schema_str)
     if args.verbose:
         print(schema_str)
     if args.out != '':
