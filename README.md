@@ -1,3 +1,5 @@
+[![Continuous Integration](https://github.com/jeffrey82221/JSkiner/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jeffrey82221/JSkiner/actions/workflows/ci.yml)
+
 # JSkiner 
 
 The is a python **Js**on **Sch**ema **In**ference **E**ngine with **R**ust's core. Its inferencing speed is about 10 times of its pure-python counterpart ([jsonschema-inference](https://pypi.org/project/jsonschema-inference/)).
