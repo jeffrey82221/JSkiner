@@ -4,7 +4,8 @@ import os
 import shutil
 from .jskiner import InferenceEngine
 from jskiner.schema import Unknown
-exec('from jskiner.schema import *')
+
+exec("from jskiner.schema import *")
 
 
 def get_args():
