@@ -3,9 +3,9 @@ import subprocess
 import os
 import shutil
 from .jskiner import InferenceEngine
-from jskiner.schema import Unknown
+from .schema import Unknown
 
-exec("from jskiner.schema import *")
+exec("from .schema import *")
 
 
 def get_args():
