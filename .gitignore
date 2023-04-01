@@ -1,4 +1,4 @@
-examples/data/test.jsonl
+examples/data/*.jsonl
 examples/data/test.jsonl.zip
 # Byte-compiled / optimized / DLL files
 __pycache__/
