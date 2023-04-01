@@ -3,7 +3,6 @@ import subprocess
 import os
 import shutil
 from .jskiner import InferenceEngine
-from .schema import Unknown
 
 exec("from .schema import *")
 
@@ -81,7 +80,7 @@ def get_schema_batchwise(src_path, split_path, split_cnt, verbose=False):
     try:
         refresh_split_path(split_path)
         split(src_path, split_path, split_cnt)
-        schema = Unknown()
+        schema = eval("Unknown()")
         file_iter = os.listdir(split_path)
         if verbose:
             try:
