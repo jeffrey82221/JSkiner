@@ -11,7 +11,7 @@ from jskiner.schema import (
     Non,
     Unknown,
     UniformRecord,
-    FieldSet
+    FieldSet,
 )
 
 
@@ -26,28 +26,50 @@ def test_data():
         (["1"], Atomic(Int())),
         (["1.2"], Atomic(Float())),
         (["[1]"], Array(Atomic(Int()))),
-        (['{"a": 1, "b": 2.0}'],
-         Record({"a": Atomic(Int()), "b": Atomic(Float())})),
+        (['{"a": 1, "b": 2.0}'], Record({"a": Atomic(Int()), "b": Atomic(Float())})),
         (["1", "null"], Optional(Atomic(Int()))),
-        (["1", "1.2", "null"],
-         Union({Atomic(Float()), Atomic(Int()), Atomic(Non())})),
-        (['{"a": 1, "b": 2.0}', '{"a": 1, "b": 5.0}'],
-         Record({"a": Atomic(Int()), "b": Atomic(Float())})),
+        (["1", "1.2", "null"], Union({Atomic(Float()), Atomic(Int()), Atomic(Non())})),
+        (
+            ['{"a": 1, "b": 2.0}', '{"a": 1, "b": 5.0}'],
+            Record({"a": Atomic(Int()), "b": Atomic(Float())}),
+        ),
         ([], Unknown()),
-        (['{"1": {"a": 5, "b": 6.0}, "2": {"a": 34, "b": 3.0 } }'],
-         UniformRecord(FieldSet({"1", "2"}), Record({"a": Atomic(Int()), "b": Atomic(Float())}))),
-        (['{"1": [{"a": 5, "b": 6.0}], "2": [{"a": 34, "b": 3.0 }] }'],
-         UniformRecord(FieldSet({"1", "2"}), Array(Record({"a": Atomic(Int()), "b": Atomic(Float())})))),
-        (['{"1": [{"a": 5, "b": 6.0}], "2": [] }'],
-         UniformRecord(FieldSet({"1", "2"}), Array(Record({"a": Atomic(Int()), "b": Atomic(Float())})))),
-        (['{"1": [{"a": 5, "b": 6.0}], "2": [{"a": 34, "b": null }] }'],
-         UniformRecord(FieldSet({"1", "2"}), Array(Record({"a": Atomic(Int()), "b": Optional(Atomic(Float()))})))),
-         (['{"\\"apple\\"": 1}'],
-         Record({'"apple"': Atomic(Int())})),
-         (['{"\\"apple\\"\\\\n": 1}'],
-         Record({'"apple"\\n': Atomic(Int())})),
-         (['{"1\\n": {"a": 5, "b": 6.0}, "2": {"a": 34, "b": 3.0 } }'],
-         UniformRecord(FieldSet({"1\n", "2"}), Record({"a": Atomic(Int()), "b": Atomic(Float())}))),
+        (
+            ['{"1": {"a": 5, "b": 6.0}, "2": {"a": 34, "b": 3.0 } }'],
+            UniformRecord(
+                FieldSet({"1", "2"}), Record({"a": Atomic(Int()), "b": Atomic(Float())})
+            ),
+        ),
+        (
+            ['{"1": [{"a": 5, "b": 6.0}], "2": [{"a": 34, "b": 3.0 }] }'],
+            UniformRecord(
+                FieldSet({"1", "2"}),
+                Array(Record({"a": Atomic(Int()), "b": Atomic(Float())})),
+            ),
+        ),
+        (
+            ['{"1": [{"a": 5, "b": 6.0}], "2": [] }'],
+            UniformRecord(
+                FieldSet({"1", "2"}),
+                Array(Record({"a": Atomic(Int()), "b": Atomic(Float())})),
+            ),
+        ),
+        (
+            ['{"1": [{"a": 5, "b": 6.0}], "2": [{"a": 34, "b": null }] }'],
+            UniformRecord(
+                FieldSet({"1", "2"}),
+                Array(Record({"a": Atomic(Int()), "b": Optional(Atomic(Float()))})),
+            ),
+        ),
+        (['{"\\"apple\\"": 1}'], Record({'"apple"': Atomic(Int())})),
+        (['{"\\"apple\\"\\\\n": 1}'], Record({'"apple"\\n': Atomic(Int())})),
+        (
+            ['{"1\\n": {"a": 5, "b": 6.0}, "2": {"a": 34, "b": 3.0 } }'],
+            UniformRecord(
+                FieldSet({"1\n", "2"}),
+                Record({"a": Atomic(Int()), "b": Atomic(Float())}),
+            ),
+        ),
     ]
 
 
@@ -65,5 +87,4 @@ def test_inference_ok(engine, test_data):
 
 def test_reduce_ok(engine):
     assert engine.reduce([Atomic(Int())]) == Atomic(Int())
-    assert engine.reduce([Atomic(Int()), Atomic(Non())]
-                         ) == Optional(Atomic(Int()))
+    assert engine.reduce([Atomic(Int()), Atomic(Non())]) == Optional(Atomic(Int()))
