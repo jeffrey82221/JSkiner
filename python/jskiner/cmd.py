@@ -142,8 +142,7 @@ def store(schema_str, output_path="out.schema", verbose=False, format=True):
             print("Result saved into", output_path)
         if format:
             try:
-                import black
+                exec('import black')
             except ImportError:
                 subprocess.run(["pip", "install", "black"])
-            black
             subprocess.run(["black", output_path])
