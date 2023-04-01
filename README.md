@@ -54,3 +54,9 @@ schema = Atomic(Int()) | Atomic(Non())
 schema
 ```
 >> Optional(Atomic(Int()))
+
+# TODO:
+
+- [ ] Enable inference from a folder of json files 
+- [ ] Enable ignoring of existing json files using cuckoo filter
+- [ ] Enable batch-by-batch process on large jsonl file
