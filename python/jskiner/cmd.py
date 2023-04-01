@@ -3,7 +3,8 @@ import subprocess
 import os
 import shutil
 from .jskiner import InferenceEngine
-from jskiner.schema import *
+from jskiner.schema import Unknown
+exec('from jskiner.schema import *')
 
 
 def get_args():
@@ -144,4 +145,5 @@ def store(schema_str, output_path="out.schema", verbose=False, format=True):
                 import black
             except ImportError:
                 subprocess.run(["pip", "install", "black"])
+            black
             subprocess.run(["black", output_path])
