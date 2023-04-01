@@ -1,3 +1,4 @@
+examples/split
 examples/data/*.jsonl
 examples/data/test.jsonl.zip
 # Byte-compiled / optimized / DLL files

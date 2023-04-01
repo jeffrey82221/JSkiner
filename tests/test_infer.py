@@ -42,6 +42,12 @@ def test_data():
          UniformRecord(FieldSet({"1", "2"}), Array(Record({"a": Atomic(Int()), "b": Atomic(Float())})))),
         (['{"1": [{"a": 5, "b": 6.0}], "2": [{"a": 34, "b": null }] }'],
          UniformRecord(FieldSet({"1", "2"}), Array(Record({"a": Atomic(Int()), "b": Optional(Atomic(Float()))})))),
+         (['{"\\"apple\\"": 1}'],
+         Record({'"apple"': Atomic(Int())})),
+         (['{"\\"apple\\"\\\\n": 1}'],
+         Record({'"apple"\\n': Atomic(Int())})),
+         (['{"1\\n": {"a": 5, "b": 6.0}, "2": {"a": 34, "b": 3.0 } }'],
+         UniformRecord(FieldSet({"1\n", "2"}), Record({"a": Atomic(Int()), "b": Atomic(Float())}))),
     ]
 
 
