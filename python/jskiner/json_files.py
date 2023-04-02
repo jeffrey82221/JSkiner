@@ -2,7 +2,7 @@
 Processing Json files in a folder 
 
 XXX:
-- [ ] args.jsonl -> `in`
+- [X] args.jsonl -> `in`
 """
 import os
 from .filter import FileFilter
@@ -30,13 +30,13 @@ class JsonFileProcessor:
         self._reducer = SchemaReducer(schema_str=schema_string)
 
     def run(self):
-        all_files = os.listdir(self._args.jsonl)
+        all_files = os.listdir(self._args.in_path)
         if self._args.verbose:
             print("number of files:", len(all_files))
         files = list(self._file_filter.connect(all_files))
         if self._args.verbose:
             print("number of new files:", len(files))
-        paths = map(lambda x: f"{self._args.jsonl}/{x}", files)
+        paths = map(lambda x: f"{self._args.in_path}/{x}", files)
         jsons = map(JsonFileProcessor.path_to_json, paths)
         json_batches = self._batcher.connect(jsons)
         schema_strings = map(self._engine.run, json_batches)

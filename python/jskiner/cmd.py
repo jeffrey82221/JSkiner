@@ -8,10 +8,10 @@ def get_args():
     parser = argparse.ArgumentParser(description="Inferencing Json Schema")
 
     parser.add_argument(
-        "--jsonl",
+        "--in-path",
         type=str,
         required=True,
-        help="Inference Json Schema from .jsonl file",
+        help="Path to inference json schema from (a .jsonl file or a folder of json files)",
     )
 
     parser.add_argument(
@@ -91,8 +91,8 @@ def get_args():
 def run() -> None:
     args = get_args()
     if args.verbose:
-        print(f"Loading {args.jsonl}")
-    if ".jsonl" in args.jsonl:
+        print(f"Loading {args.in_path}")
+    if ".jsonl" in args.in_path:
         schema_str = JsonlProcessor(args).run()
     else:
         schema_str = JsonFileProcessor(args).run()

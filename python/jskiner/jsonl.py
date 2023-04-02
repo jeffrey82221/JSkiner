@@ -19,7 +19,7 @@ class JsonlProcessor:
     def run(self):
         if self._args.split > 1:
             schema_str = JsonlProcessor.get_schema_batchwise(
-                self._args.jsonl,
+                self._args.in_path,
                 self._args.split_path,
                 self._args.split,
                 verbose=self._args.verbose,
@@ -27,7 +27,7 @@ class JsonlProcessor:
             )
         else:
             schema_str = JsonlProcessor.get_schema_from_jsonl(
-                self._args.jsonl, worker_cnt=self._args.nworkers
+                self._args.in_path, worker_cnt=self._args.nworkers
             )
         return schema_str
 
