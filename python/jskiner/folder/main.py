@@ -5,10 +5,10 @@ XXX:
 - [X] args.jsonl -> `in`
 """
 import os
+from ..jskiner import InferenceEngine
+from ..reduce import SchemaReducer
 from .filter import FileFilter
 from .batch import Batcher
-from .jskiner import InferenceEngine
-from .reduce import SchemaReducer
 
 
 class JsonFileProcessor:

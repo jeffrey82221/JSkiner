@@ -1,4 +1,4 @@
-from jskiner.batch import Batcher
+from jskiner.folder.batch import Batcher
 
 
 def test_connect():

@@ -1,7 +1,7 @@
 import argparse
 import subprocess
 from .jsonl import JsonlProcessor
-from .json_files import JsonFileProcessor
+from .folder import JsonFileProcessor
 
 
 def get_args():

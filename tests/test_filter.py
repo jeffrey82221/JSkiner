@@ -1,5 +1,5 @@
 import os
-from jskiner.filter import FileFilter
+from jskiner.folder.filter import FileFilter
 
 
 def test_connect():
