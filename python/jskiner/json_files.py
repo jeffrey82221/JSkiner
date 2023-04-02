@@ -29,7 +29,7 @@ class JsonFileProcessor:
             schema_string = "Unknown()"
         self._reducer = SchemaReducer(schema_str=schema_string)
 
-    def run(self):
+    def run(self) -> str:
         all_files = os.listdir(self._args.in_path)
         if self._args.verbose:
             print("number of files:", len(all_files))
@@ -45,12 +45,11 @@ class JsonFileProcessor:
         return schema_str
 
     @staticmethod
-    def path_to_json(path):
+    def path_to_json(path: str) -> str:
         with open(path, "r") as f:
             result = f.read()
         return result
 
     def update_filter(self, files):
         updated_files = list(map(self._file_filter.insert, files))
-        print("number of updated files:", len(updated_files))
         self._file_filter.save()

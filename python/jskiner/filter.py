@@ -1,7 +1,7 @@
 import os
 import pickle
 import subprocess
-import typing
+from typing import Iterable
 import math
 
 
@@ -60,7 +60,7 @@ class FileFilter:
     def insert(self, file_name: str):
         self._cuckoo.insert(file_name)
 
-    def connect(self, fn_generator: typing.Iterable):
+    def connect(self, fn_generator: Iterable[str]) -> Iterable[str]:
         for fn in fn_generator:
             if not self._cuckoo.contains(fn):
                 yield fn

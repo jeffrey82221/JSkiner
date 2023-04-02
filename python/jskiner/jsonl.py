@@ -17,7 +17,7 @@ class JsonlProcessor:
         self._engine = InferenceEngine(args.nworkers)
         self._reducer = SchemaReducer()
 
-    def run(self):
+    def run(self) -> str:
         if self._args.split > 1:
             schema_str = self.get_schema_batchwise(
                 self._args.in_path, self._args.split_path, self._args.split
@@ -67,8 +67,7 @@ class JsonlProcessor:
     def split(src_path, split_path, split_cnt):
         total = JsonlProcessor.get_total_json_count(src_path)
         cnt_per_file = int(total / split_cnt)
-        subprocess.run(["split", "-l", str(cnt_per_file),
-                       src_path, split_path + "/"])
+        subprocess.run(["split", "-l", str(cnt_per_file), src_path, split_path + "/"])
 
     @staticmethod
     def get_total_json_count(path):

@@ -96,14 +96,10 @@ def run() -> None:
         schema_str = JsonlProcessor(args).run()
     else:
         schema_str = JsonFileProcessor(args).run()
-    store(
-        schema_str,
-        output_path=args.out,
-        verbose=args.verbose,
-        format=args.format)
+    store(schema_str, output_path=args.out, verbose=args.verbose, format=args.format)
 
 
-def store(schema_str, output_path="out.schema", verbose=False, format=True):
+def store(schema_str: str, output_path="out.schema", verbose=False, format=True):
     if output_path != "":
         with open(output_path, "w") as f:
             f.write(schema_str)
