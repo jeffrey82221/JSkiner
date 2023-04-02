@@ -5,6 +5,7 @@ XXX:
 - [X] args.jsonl -> `in`
 """
 import os
+import subprocess
 from ..jskiner import InferenceEngine
 from ..reduce import SchemaReducer
 from .filter import FileFilter
@@ -36,6 +37,13 @@ class JsonFileProcessor:
         files = list(self._file_filter.connect(all_files))
         if self._args.verbose:
             print("number of new files:", len(files))
+        if self._args.verbose:
+            try:
+                import tqdm
+            except ImportError:
+                subprocess.run(["pip", "install", "tqdm"])
+                import tqdm
+            files = tqdm.tqdm(files)
         paths = map(lambda x: f"{self._args.in_path}/{x}", files)
         jsons = map(JsonFileProcessor.path_to_json, paths)
         json_batches = self._batcher.connect(jsons)
