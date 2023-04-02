@@ -16,12 +16,26 @@ pip install jskiner
 
 ```bash
 jskiner \
-    --jsonl <path_to_jsonl> 
+    --in <path_to_jsonl> 
     --verbose <false/true> 
     --out <output_file_path>
     --nworkers <number_of_cpu_core>
     --split <number_of_split_batch_size>
-    --split_path <path_to_store_the_split_files>
+    --split-path <path_to_store_the_split_files>
+```
+
+## Checking the Json Schema for a folder of json files
+
+```bash
+jskiner \
+    --in <path_to_jsons> 
+    --verbose <false/true> 
+    --out <output_file_path>
+    --nworkers <number_of_cpu_core>
+    --batch-size <batch_size_for_inferencing>
+    --cuckoo-path <path_to_store_the_cuckoo_filter>
+    --cuckoo-size <approximated_size_of_the_cuckoo_filter (Recommend using 10X of current json count)>
+    --cuckoo-fpr <false_positive_rate_of_the_cuckoo_filter>
 ```
 
 ## Infering the Schema in Python
@@ -59,10 +73,11 @@ schema
 
 # TODO:
 
-- [ ] Enable inference from a folder of json files
-- [ ] Enable ignoring of existing json files using cuckoo filter
-- [ ] Enable add starting schema file
-- [ ] Enable Regex to represent patterned FieldSet
+- [X] Enable inference from a folder of json files
+- [X] Enable ignoring of existing json files using cuckoo filter
+- [X] Enable add starting schema file
 - [X] Enable batch-by-batch process on large jsonl file
 - [X] FIX: make sure __repr__ escape special characters. 
 - [X] Auto Formatting Using Black
+- [ ] Enable Regex to represent patterned FieldSet
+- [ ] Using borrow to increase efficiency 

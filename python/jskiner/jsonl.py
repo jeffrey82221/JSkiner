@@ -1,56 +1,47 @@
+"""
+XXX:
+- [X] make staticmethod class method to increase performance
+- [X] extract schema Reducer from jsonl.py and json_files.py
+- [X] make pipeline to make code more understandable
+"""
 import os
 import shutil
 import subprocess
 from .jskiner import InferenceEngine
-
-exec("from .schema import *")
+from .reduce import SchemaReducer
 
 
 class JsonlProcessor:
     def __init__(self, args):
         self._args = args
+        self._engine = InferenceEngine(args.nworkers)
+        self._reducer = SchemaReducer()
 
-    def run(self):
+    def run(self) -> str:
         if self._args.split > 1:
-            schema_str = JsonlProcessor.get_schema_batchwise(
-                self._args.jsonl,
-                self._args.split_path,
-                self._args.split,
-                verbose=self._args.verbose,
-                worker_cnt=self._args.nworkers,
+            schema_str = self.get_schema_batchwise(
+                self._args.in_path, self._args.split_path, self._args.split
             )
         else:
-            schema_str = JsonlProcessor.get_schema_from_jsonl(
-                self._args.jsonl, worker_cnt=self._args.nworkers
-            )
+            json_batch = self.load_json_batch(self._args.in_path)
+            schema_str = self._engine.run(json_batch)
         return schema_str
 
-    @staticmethod
-    def get_schema_batchwise(
-        src_path, split_path, split_cnt, verbose=False, worker_cnt=1
-    ):
+    def get_schema_batchwise(self, src_path, split_path, split_cnt):
         try:
             JsonlProcessor.refresh_split_path(split_path)
             JsonlProcessor.split(src_path, split_path, split_cnt)
-            schema = eval("Unknown()")
             file_iter = os.listdir(split_path)
-            if verbose:
+            if self._args.verbose:
                 try:
                     import tqdm
                 except ImportError:
                     subprocess.run(["pip", "install", "tqdm"])
                 file_iter = tqdm.tqdm(file_iter)
-            for file_name in file_iter:
-                selected_path = f"{split_path}/{file_name}"
-                if verbose:
-                    print("Start Inferencing", selected_path)
-                schema_str = JsonlProcessor.get_schema_from_jsonl(
-                    selected_path, worker_cnt=worker_cnt
-                )
-                schema |= eval(schema_str)
-                if verbose:
-                    print("Finish Inferencing", selected_path)
-            schema_str = schema.__repr__()
+            paths = map(lambda fn: f"{split_path}/{fn}", file_iter)
+            json_batches = map(self.load_json_batch, paths)
+            schema_strings = map(self._engine.run, json_batches)
+            schema_str = self._reducer.reduce(schema_strings)
             return schema_str
         except BaseException as e:
             with open("log", "w") as f:
@@ -58,6 +49,11 @@ class JsonlProcessor:
             raise e
         finally:
             JsonlProcessor.refresh_split_path(split_path)
+
+    def load_json_batch(self, jsonl_path):
+        with open(jsonl_path, "r") as f:
+            json_batch = [x for x in f]
+        return json_batch
 
     @staticmethod
     def refresh_split_path(path):
@@ -78,11 +74,3 @@ class JsonlProcessor:
         out = subprocess.check_output(["wc", "-l", path])
         total = int(out.decode("utf-8").split(path)[0])
         return total
-
-    @staticmethod
-    def get_schema_from_jsonl(jsonl_path, worker_cnt=1):
-        with open(jsonl_path, "r") as f:
-            json_list = [x for x in f]
-        engine = InferenceEngine(worker_cnt)
-        schema_str = engine.run(json_list)
-        return schema_str
