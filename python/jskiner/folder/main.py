@@ -5,6 +5,7 @@ XXX:
 - [X] args.jsonl -> `in`
 """
 import os
+import subprocess
 from ..jskiner import InferenceEngine
 from ..reduce import SchemaReducer
 from .filter import FileFilter
