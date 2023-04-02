@@ -1,5 +1,4 @@
 from typing import Iterable
-from .schema import Unknown
 
 exec("from .schema import *")
 
