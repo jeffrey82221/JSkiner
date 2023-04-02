@@ -1,8 +1,14 @@
 import os
-import pickle
+import sys
 import subprocess
 from typing import Iterable
 import math
+
+if sys.version.startswith("3.7"):
+    subprocess.run(["pip", "install", "pickle5"])
+    import pickle5 as pickle
+else:
+    import pickle
 
 
 class FileFilter:
