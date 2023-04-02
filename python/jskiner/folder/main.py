@@ -41,6 +41,7 @@ class JsonFileProcessor:
                 import tqdm
             except ImportError:
                 subprocess.run(["pip", "install", "tqdm"])
+                import tqdm
             files = tqdm.tqdm(files)
         paths = map(lambda x: f"{self._args.in_path}/{x}", files)
         jsons = map(JsonFileProcessor.path_to_json, paths)
