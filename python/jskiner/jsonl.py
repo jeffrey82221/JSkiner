@@ -37,6 +37,7 @@ class JsonlProcessor:
                     import tqdm
                 except ImportError:
                     subprocess.run(["pip", "install", "tqdm"])
+                    import tqdm
                 file_iter = tqdm.tqdm(file_iter)
             paths = map(lambda fn: f"{split_path}/{fn}", file_iter)
             json_batches = map(self.load_json_batch, paths)
