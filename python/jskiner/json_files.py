@@ -51,5 +51,5 @@ class JsonFileProcessor:
         return result
 
     def update_filter(self, files):
-        updated_files = list(map(self._file_filter.insert, files))
+        _ = list(map(self._file_filter.insert, files))
         self._file_filter.save()
