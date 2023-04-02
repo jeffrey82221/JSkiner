@@ -147,7 +147,7 @@ impl RustRecord {
     }
     fn compose_record_str(&self, fieldset: HashSet<String>) -> String {
         let mut strings: Vec<String> = fieldset.into_iter()
-            .map(|key| format!("\"{}\": {}", key, self.field_schema.get(&key).unwrap().repr()))
+            .map(|key| format!("\"{}\": {}", add_escape(&key), self.field_schema.get(&key).unwrap().repr()))
             .collect();
         strings.sort();
         format!("Record({{{}}})", strings.join(", "))
@@ -171,7 +171,7 @@ impl RustFieldSet {
     }
     pub fn repr(&self) -> String {
         let strings: Vec<String> = self.to_vec().iter()
-            .map(|s| format!("\"{}\"",s))
+            .map(|s| format!("\"{}\"", add_escape(&s)))
             .collect();
         format!("FieldSet({{{}}})", strings.join(", "))
     }
@@ -181,6 +181,21 @@ impl Hash for RustFieldSet {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.repr().hash(state)
     }
+}
+
+fn add_escape(input: &String) -> String {
+    let mut result = String::new();
+    for c in input.chars() {
+        match c {
+            '"' => result.push_str("\\\""),
+            '\\' => result.push_str("\\\\"),
+            '\n' => result.push_str("\\n"),
+            '\t' => result.push_str("\\t"),
+            '\r' => result.push_str("\\r"),
+            _ => result.push(c),
+        }
+    }
+    result
 }
 
 use super::atomic::atomic::*;
@@ -339,4 +354,15 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn test_add_escape() {
+        assert_eq!(add_escape(&String::from("\"")), String::from("\\\""));
+        assert_eq!(add_escape(&String::from("\"apple\"")), String::from("\\\"apple\\\""));
+        assert_eq!(add_escape(&String::from("\\")), String::from("\\\\"));
+        assert_eq!(add_escape(&String::from("\\n")), String::from("\\\\n"));
+        assert_eq!(add_escape(&String::from("\n")), String::from("\\n"));
+        assert_eq!(add_escape(&String::from("\r")), String::from("\\r"));
+        assert_eq!(add_escape(&String::from("\t")), String::from("\\t"));
+    }
 }
+

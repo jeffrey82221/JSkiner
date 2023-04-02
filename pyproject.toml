@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "jskiner"
 requires-python = ">=3.7"
-version = "0.0.12"
+version = "0.0.13"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",

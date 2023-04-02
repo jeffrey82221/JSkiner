@@ -17,9 +17,11 @@ pip install jskiner
 ```bash
 jskiner \
     --jsonl <path_to_jsonl> 
-    --verbose <0/1> 
+    --verbose <false/true> 
     --out <output_file_path>
     --nworkers <number_of_cpu_core>
+    --split <number_of_split_batch_size>
+    --split_path <path_to_store_the_split_files>
 ```
 
 ## Infering the Schema in Python
@@ -54,3 +56,13 @@ schema = Atomic(Int()) | Atomic(Non())
 schema
 ```
 >> Optional(Atomic(Int()))
+
+# TODO:
+
+- [ ] Enable inference from a folder of json files
+- [ ] Enable ignoring of existing json files using cuckoo filter
+- [ ] Enable add starting schema file
+- [ ] Enable Regex to represent patterned FieldSet
+- [X] Enable batch-by-batch process on large jsonl file
+- [X] FIX: make sure __repr__ escape special characters. 
+- [X] Auto Formatting Using Black
