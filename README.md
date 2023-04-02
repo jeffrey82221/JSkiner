@@ -73,11 +73,11 @@ schema
 
 # TODO:
 
-- [ ] Enable inference from a folder of json files
-- [ ] Enable ignoring of existing json files using cuckoo filter
-- [ ] Enable add starting schema file
-- [ ] Enable Regex to represent patterned FieldSet
+- [X] Enable inference from a folder of json files
+- [X] Enable ignoring of existing json files using cuckoo filter
+- [X] Enable add starting schema file
 - [X] Enable batch-by-batch process on large jsonl file
 - [X] FIX: make sure __repr__ escape special characters. 
 - [X] Auto Formatting Using Black
+- [ ] Enable Regex to represent patterned FieldSet
 - [ ] Using borrow to increase efficiency 
