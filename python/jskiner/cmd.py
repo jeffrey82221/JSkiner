@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 from .jsonl import JsonlProcessor
+from .json_files import JsonFileProcessor
 
 
 def get_args():
@@ -49,11 +50,39 @@ def get_args():
         help="Number of splitted jsonl file (1 for no splitting)",
     )
     parser.add_argument(
-        "--split_path",
+        "--split-path",
         type=str,
         required=False,
         default="/tmp/split",
         help="Path to store the temporary splitted jsonl files",
+    )
+    parser.add_argument(
+        "--cuckoo-path",
+        type=str,
+        required=False,
+        default="cuckoo.pickle",
+        help="Path to store pickled Cuckoo Filter",
+    )
+    parser.add_argument(
+        "--cuckoo-size",
+        type=int,
+        required=False,
+        default=10000000,
+        help="Approximated json file count for build a Cuckoo Filter with enough capacity",
+    )
+    parser.add_argument(
+        "--cuckoo-fpr",
+        type=float,
+        required=False,
+        default=0.01,
+        help="False Positive Rate of the Cuckoo Filter",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        required=False,
+        default=None,
+        help="Batch Size of Inferencing (required when input is a folder of json files)",
     )
     args = parser.parse_args()
     return args
@@ -63,7 +92,10 @@ def run() -> None:
     args = get_args()
     if args.verbose:
         print(f"Loading {args.jsonl}")
-    schema_str = JsonlProcessor(args).run()
+    if ".jsonl" in args.jsonl:
+        schema_str = JsonlProcessor(args).run()
+    else:
+        schema_str = JsonFileProcessor(args).run()
     store(schema_str, output_path=args.out, verbose=args.verbose, format=args.format)
 
 

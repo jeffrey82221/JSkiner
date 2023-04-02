@@ -1,3 +1,9 @@
+"""
+XXX:
+- [ ] make staticmethod class method to increase performance 
+- [ ] extract schema Reducer from jsonl.py and json_files.py
+- [ ] make pipeline to make code more understandable
+"""
 import os
 import shutil
 import subprocess
