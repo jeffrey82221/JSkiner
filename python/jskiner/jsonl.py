@@ -1,6 +1,6 @@
 """
 XXX:
-- [X] make staticmethod class method to increase performance 
+- [X] make staticmethod class method to increase performance
 - [X] extract schema Reducer from jsonl.py and json_files.py
 - [X] make pipeline to make code more understandable
 """
@@ -67,7 +67,8 @@ class JsonlProcessor:
     def split(src_path, split_path, split_cnt):
         total = JsonlProcessor.get_total_json_count(src_path)
         cnt_per_file = int(total / split_cnt)
-        subprocess.run(["split", "-l", str(cnt_per_file), src_path, split_path + "/"])
+        subprocess.run(["split", "-l", str(cnt_per_file),
+                       src_path, split_path + "/"])
 
     @staticmethod
     def get_total_json_count(path):

@@ -1,5 +1,5 @@
 """
-Processing Json files in a folder 
+Processing Json files in a folder
 
 XXX:
 - [X] args.jsonl -> `in`
