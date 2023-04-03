@@ -16,6 +16,12 @@ except ImportError:
     subprocess.run(["pip", "install", "blosc"])
     import blosc
 
+try:
+    from cuckoo.filter import CuckooFilter
+except ImportError:
+    subprocess.run(["pip", "install", "scalable-cuckoo-filter"])
+    from cuckoo.filter import CuckooFilter
+
 
 class FileFilter:
     """
@@ -57,11 +63,6 @@ class FileFilter:
                 print("capacity:", capacity)
                 print("false positive rate:", error_rate)
                 print("bucket size:", bucket_size)
-            try:
-                from cuckoo.filter import CuckooFilter
-            except ImportError:
-                subprocess.run(["pip", "install", "scalable-cuckoo-filter"])
-                from cuckoo.filter import CuckooFilter
             self._cuckoo = CuckooFilter(
                 capacity=capacity, error_rate=error_rate, bucket_size=bucket_size
             )
