@@ -6,6 +6,7 @@ XXX:
 """
 import os
 import subprocess
+import random
 from ..jskiner import InferenceEngine
 from ..reduce import SchemaReducer
 from .filter import FileFilter
@@ -26,6 +27,8 @@ class JsonFileProcessor:
         if os.path.exists(args.cuckoo_path):
             with open(args.out, "r") as f:
                 schema_string = f.read()
+            if args.verbose:
+                print(f"Pre-existing schema file {args.out} loaded")
         else:
             schema_string = "Unknown()"
         self._reducer = SchemaReducer(schema_str=schema_string)
@@ -34,7 +37,13 @@ class JsonFileProcessor:
         all_files = os.listdir(self._args.in_path)
         if self._args.verbose:
             print("number of files:", len(all_files))
-        files = list(self._file_filter.connect(all_files))
+        if self._args.sample_size:
+            sampled_files = random.sample(all_files, self._args.sample_size)
+        else:
+            sampled_files = all_files
+        if self._args.verbose:
+            print("number of sampled files:", len(sampled_files))
+        files = list(self._file_filter.connect(sampled_files))
         if self._args.verbose:
             print("number of new files:", len(files))
         if self._args.verbose:
