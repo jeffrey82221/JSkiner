@@ -84,6 +84,13 @@ def get_args():
         default=None,
         help="Batch Size of Inferencing (required when input is a folder of json files)",
     )
+    parser.add_argument(
+        "--sample-size",
+        type=int,
+        required=False,
+        default=None,
+        help="Number of json files to be sampled (a approach to avoid slow inferencing)",
+    )
     args = parser.parse_args()
     return args
 

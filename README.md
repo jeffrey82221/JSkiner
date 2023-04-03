@@ -79,5 +79,6 @@ schema
 - [X] Enable batch-by-batch process on large jsonl file
 - [X] FIX: make sure __repr__ escape special characters. 
 - [X] Auto Formatting Using Black
+- [X] Enable sampling of json files
 - [ ] Enable Regex to represent patterned FieldSet
 - [ ] Using borrow to increase efficiency 

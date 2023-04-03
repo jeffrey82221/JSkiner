@@ -10,6 +10,12 @@ if sys.version.startswith("3.7"):
 else:
     import pickle
 
+try:
+    import blosc
+except ImportError:
+    subprocess.run(["pip", "install", "blosc"])
+    import blosc
+
 
 class FileFilter:
     """
@@ -72,14 +78,18 @@ class FileFilter:
                 yield fn
 
     def load(self):
-        with open(self._dump_file_path, "rb") as handle:
-            result = pickle.load(handle)
+        with open(self._dump_file_path, "rb") as f:
+            compressed_pickle = f.read()
+        depressed_pickle = blosc.decompress(compressed_pickle)
+        result = pickle.loads(depressed_pickle)
         if self._verbose:
             print(f"{self._dump_file_path} Loaded")
         return result
 
     def save(self):
-        with open(self._dump_file_path, "wb") as handle:
-            pickle.dump(self._cuckoo, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickled_data = pickle.dumps(self._cuckoo)
+        compressed_pickle = blosc.compress(pickled_data)
+        with open(self._dump_file_path, "wb") as f:
+            f.write(compressed_pickle)
         if self._verbose:
             print(f"{self._dump_file_path} Saved")
