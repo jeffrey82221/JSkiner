@@ -81,4 +81,4 @@ schema
 - [X] Auto Formatting Using Black
 - [X] Enable sampling of json files
 - [ ] Enable Regex to represent patterned FieldSet
-- [ ] Using borrow to increase efficiency 
+- [ ] Enable direct inferencing from API online. (able to avoid repeat download of json)
