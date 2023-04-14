@@ -13,5 +13,9 @@ class SchemaReducer:
                 self._schema |= eval(schema_string)
             return self._schema.__repr__()
         except BaseException as e:
-            print("Error on:\n", schema_string)
+            p1 = self._schema.__repr__()
+            p2 = schema_string
+            print("Reduce Error:")
+            print("self._schema:\n", p1)
+            print("schema_string:\n", p2)
             raise e
