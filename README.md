@@ -82,3 +82,4 @@ schema
 - [X] Enable sampling of json files
 - [ ] Enable Regex to represent patterned FieldSet
 - [ ] Enable direct inferencing from API online. (able to avoid repeat download of json)
+- [ ] Debug: show input that causing panick. (alter panic str / alter reduce.py exception logging) 
