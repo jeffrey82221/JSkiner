@@ -204,10 +204,10 @@ impl RustJsonSchema {
                                     };
                                     if is_same_type {
                                         // TODO:
-                                        // 1. [ ] Must check whether the merged result is 'Union'
+                                        // 1. [X] Must check whether the merged result is 'Union'
                                         // If the merged result is Union, it can lead to "Union in Union Error" later.
-                                        // 2. [ ] total_has_same_type -> merge_count
-                                        // 3. [ ] must avoid repeat merge into more than one element in the left Union.
+                                        // 2. [-] total_has_same_type -> merge_count
+                                        // 3. [X] must avoid repeat merge into more than one element in the left Union.
                                         let merged = other.clone().merge(jsonschema.clone());
                                         match merged {
                                             RustJsonSchema::Union(_) => {
