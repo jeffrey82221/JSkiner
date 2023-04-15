@@ -6,12 +6,7 @@ from jskiner.schema import (
     Optional,
     Record,
     Array,
-    Union,
-    Str,
-    UniformRecord,
-    FieldSet,
-    Bool,
-    Unknown,
+    Union
 )
 
 

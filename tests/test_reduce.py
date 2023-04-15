@@ -1,18 +1,15 @@
 import pytest
 from jskiner.schema import (
     Int,
-    Float,
     Atomic,
     Non,
     Optional,
     Record,
     Array,
-    Union,
     Str,
     UniformRecord,
     UnionRecord,
     FieldSet,
-    Bool,
     Unknown,
 )
 from jskiner.reduce import SchemaReducer
