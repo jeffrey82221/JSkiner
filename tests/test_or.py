@@ -1,4 +1,18 @@
-from jskiner.schema import Int, Float, Atomic, Non, Optional, Record, Array, Union
+from jskiner.schema import (
+    Int,
+    Float,
+    Atomic,
+    Non,
+    Optional,
+    Record,
+    Array,
+    Union,
+    Str,
+    UniformRecord,
+    FieldSet,
+    Bool,
+    Unknown,
+)
 
 
 def test_or():
