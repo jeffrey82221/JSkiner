@@ -1,5 +1,5 @@
 from . import jskiner  # noqa: F401
-
+PARALLEL_CNT = 4
 schema_names = [
     "Int",
     "Float",
@@ -39,6 +39,7 @@ def code_gen(class_name):
     class_define_code = f"""
 class {class_name}:
     def __init__(self, *args):
+        self._engine = jskiner.InferenceEngine({PARALLEL_CNT})
         if len(args) == 1:
             if '{class_name}' == 'FieldSet':
                 self.rc = jskiner.{class_name}(args[0])
@@ -55,8 +56,7 @@ class {class_name}:
     def __hash__(self):
         return hash(self.__repr__())
     def __or__(self, other):
-        engine = jskiner.InferenceEngine(1)
-        return eval(engine.reduce([self.rc, other.rc]))
+        return eval(self._engine.reduce([self.rc, other.rc]))
 """
     return class_define_code
 
