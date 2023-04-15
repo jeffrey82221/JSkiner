@@ -120,7 +120,7 @@ def test_reduce(basic_schema, union_schema):
     assert isinstance(union_schema, Union)
     reducer = SchemaReducer()
     assert reducer.reduce([basic_schema.__repr__(), basic_schema.__repr__()]) == basic_schema.__repr__()
-    # ans = reducer.reduce([union_schema.__repr__(), basic_schema.__repr__()])
-    #assert isinstance(ans, Union)
+    ans = reducer.reduce([union_schema.__repr__(), basic_schema.__repr__()])
+    assert isinstance(ans, Union)
 
 
