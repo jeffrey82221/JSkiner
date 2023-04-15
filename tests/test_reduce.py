@@ -123,8 +123,9 @@ def test_reduce(basic_schema, union_schema, special_schema):
     assert isinstance(union_schema, UnionRecord)
     reducer = SchemaReducer()
     assert (
-        reducer.reduce([basic_schema.__repr__(), basic_schema.__repr__()])
-        == basic_schema.__repr__()
+        reducer.reduce(
+            [basic_schema.__repr__(), basic_schema.__repr__()]
+        ) == basic_schema.__repr__()
     )
     ans = reducer.reduce([union_schema.__repr__(), basic_schema.__repr__()])
     assert isinstance(eval(ans), UnionRecord)
