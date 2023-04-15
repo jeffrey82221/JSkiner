@@ -153,18 +153,19 @@ impl RustJsonSchema {
                         RustJsonSchema::Union(RustUnion {content: content})
                     },
                     RustJsonSchema::Union(_r) => {
+                        //TODO: element in l and another in r may be merged.
                         let mut schemas = Vec::new();
                         schemas.extend(l.content.clone());
                         schemas.extend(_r.content.clone());
                         reduce(schemas)
                     },
-                    _ => {
+                    _ => { //l: Union, r: Array | Record
                         let mut content = HashSet::new();
                         let mut total_has_same_type: u8 = 0;
                         for jsonschema in l.content.iter() {
                             match &jsonschema {
-                                RustJsonSchema::Union(_u) => {
-                                    panic!("There should not be Union in Union")
+                                RustJsonSchema::Union(u) => {
+                                    panic!("Union in Union Error:\n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), u.repr(), other.repr())
                                 },
                                 RustJsonSchema::Unknown(_) => {},
                                 _ => {
@@ -249,6 +250,9 @@ mod tests {
         // Union | Atomic
         let uni = array.clone().merge(non_atom.clone());
         assert_eq!(uni.merge(str_atom.clone()).repr(), "Union({Array(Atomic(Str())), Atomic(Non()), Atomic(Str())})");
+        // Union | Atomic
+        let uni = array.clone().merge(str_atom.clone());
+        assert_eq!(uni.merge(str_atom.clone()).repr(), "Union({Array(Atomic(Str())), Atomic(Str())})");
         // Union | Array
         let uni = str_atom.clone().merge(non_atom.clone()).merge(non_array.clone());
         assert_eq!(uni.merge(str_array.clone()).repr(), "Union({Array(Optional(Atomic(Str()))), Atomic(Non()), Atomic(Str())})");
