@@ -8,7 +8,7 @@ mod schema;
 use schema::top::RustJsonSchema;
 use schema::atomic::atomic::{Non, Str, Bool, Atomic};
 use schema::atomic::num::{Float, Int};
-use schema::record::{Record, FieldSet, UniformRecord};
+use schema::record::{Record, FieldSet, UniformRecord, UnionRecord};
 use schema::array::{Array};
 use schema::unions::{Union, Optional};
 use schema::unknown::Unknown;
@@ -56,6 +56,7 @@ fn jskiner( _py: Python, m: &PyModule ) -> PyResult<()> {
     m.add_class::<Record>()?;
     m.add_class::<FieldSet>()?;
     m.add_class::<UniformRecord>()?;
+    m.add_class::<UnionRecord>()?;
     m.add_class::<Union>()?;
     m.add_class::<Optional>()?;
     m.add_class::<Unknown>()?;

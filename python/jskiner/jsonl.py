@@ -1,8 +1,5 @@
 """
-XXX:
-- [X] make staticmethod class method to increase performance
-- [X] extract schema Reducer from jsonl.py and json_files.py
-- [X] make pipeline to make code more understandable
+Jsonl Processing
 """
 import os
 import shutil

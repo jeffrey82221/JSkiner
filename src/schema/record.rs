@@ -2,7 +2,6 @@ use pyo3::prelude::*;
 use pyo3::types::{PySet, PyDict};
 use std::collections::{HashMap, HashSet};
 use std::hash::{Hash, Hasher};
-
 use super::top::RustJsonSchema;
 use super::convert::py2rust;
 use crate::op::reduce::reduce;
@@ -40,9 +39,9 @@ pub struct UniformRecord {
 #[pymethods]
 impl UniformRecord {
     #[new]
-    fn new(field_set: FieldSet, value: &PyAny) -> PyResult<UniformRecord> {
+    fn new(field_set: FieldSet, schema: &PyAny) -> PyResult<UniformRecord> {
         let mut content = HashMap::new();
-        let rust_schema = py2rust(value);
+        let rust_schema = py2rust(schema);
         for key_str in field_set.rust_obj.content.iter() {
             content.insert(key_str.clone(), rust_schema.clone());
         }
@@ -69,6 +68,48 @@ impl FieldSet {
             fields.insert(field);
         }
         Ok(FieldSet { rust_obj: RustFieldSet::new(fields) })
+    }
+    fn __repr__(&self) -> String {
+        self.rust_obj.repr()
+    }
+}
+#[derive(Clone)]
+#[pyclass]
+pub struct UnionRecord {
+    pub rust_obj: RustRecord,
+}
+#[pymethods]
+impl UnionRecord {
+    #[new]
+    fn new(obj: &PySet) -> PyResult<Self> {
+        let mut records = Vec::<RustJsonSchema>::new();
+        let mut cnt: u32 = 0;
+        for schema in obj.iter() {
+            cnt += 1;
+            let r_schema = py2rust(schema);
+            match r_schema {
+                RustJsonSchema::Record(_) => {
+                    records.push(r_schema);
+                },
+                _ => {
+                    panic!("element of UnionRecord should be Record")
+                }
+            }
+            
+        }
+        if cnt < 2 {
+            panic!("# of content of UnionRecord should >= 2")
+        }
+        let merged_record = reduce(records);
+        match merged_record {
+            RustJsonSchema::Record(ro) => {
+                Ok(UnionRecord { rust_obj: ro})
+            },
+            _ => {
+                panic!("merged UnionRecord content should be RustRecord")
+            }
+        }
+        
     }
     fn __repr__(&self) -> String {
         self.rust_obj.repr()
@@ -143,7 +184,7 @@ impl RustRecord {
             .map(|fieldset| self.compose_record_str(fieldset.content.clone()))
             .collect();
         record_strings.sort();
-        format!("Union({{{}}})", record_strings.join(", "))
+        format!("UnionRecord({{{}}})", record_strings.join(", "))
     }
     fn compose_record_str(&self, fieldset: HashSet<String>) -> String {
         let mut strings: Vec<String> = fieldset.into_iter()
@@ -260,12 +301,12 @@ mod tests {
         map.insert("banana".to_owned(), non_atom.clone());
         map.insert("apple".to_owned(), str_atom.clone());
         let rr = RustRecord::new(map.clone());
-        assert_eq!(rr.repr_co_occurence(), "Union({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
+        assert_eq!(rr.repr_co_occurence(), "UnionRecord({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
         let r_schema = RustJsonSchema::Record(rr.clone());
         let complex_r_schema = r_schema.clone().merge(r_schema.clone());
         match complex_r_schema.clone() {
             RustJsonSchema::Record(r) => {
-                assert_eq!(r.repr_co_occurence(), "Union({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
+                assert_eq!(r.repr_co_occurence(), "UnionRecord({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
             },
             _ => {
                 panic!();
@@ -277,7 +318,7 @@ mod tests {
         let complex_rc_schema = rc_schema.merge(complex_r_schema.clone());
         match complex_rc_schema.clone() {
             RustJsonSchema::Record(r) => {
-                assert_eq!(r.repr_co_occurence(), "Union({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non()), \"pie\": Atomic(Str())}), Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
+                assert_eq!(r.repr_co_occurence(), "UnionRecord({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non()), \"pie\": Atomic(Str())}), Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())})})");
             },
             _ => {
                 panic!();
@@ -318,7 +359,7 @@ mod tests {
         let p_schema = RustJsonSchema::Record(RustRecord::new(map.clone()));
         match r_schema.clone().merge(p_schema).clone() {
             RustJsonSchema::Record(r) => {
-                assert_eq!(r.repr(), "Union({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())}), Record({\"can\": Atomic(Non())})})");
+                assert_eq!(r.repr(), "UnionRecord({Record({\"apple\": Atomic(Str()), \"banana\": Atomic(Non())}), Record({\"can\": Atomic(Non())})})");
             },
             _ => {
                 panic!();

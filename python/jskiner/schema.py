@@ -12,6 +12,7 @@ schema_names = [
     "Record",
     "FieldSet",
     "UniformRecord",
+    "UnionRecord",
     "Union",
     "Optional",
     "Unknown",
@@ -46,9 +47,9 @@ class {class_name}:
                 self.rc = jskiner.{class_name}(args[0])
             else:
                 self.rc = jskiner.{class_name}(convert_py_2_rust(args[0]))
-        elif len(args) == 2:
+        elif len(args) == 2: # UniformRecord
             self.rc = jskiner.{class_name}(convert_py_2_rust(args[0]), convert_py_2_rust(args[1]))
-        else:
+        else: # Int, Float, Unknown, Str, Non, Bool
             self.rc = jskiner.{class_name}()
     def __repr__(self):
         return str(self.rc)
