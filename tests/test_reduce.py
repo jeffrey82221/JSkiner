@@ -15,6 +15,8 @@ from jskiner.schema import (
     Unknown,
 )
 from jskiner.reduce import SchemaReducer
+
+
 @pytest.fixture
 def basic_schema():
     return Record(
@@ -64,6 +66,8 @@ def basic_schema():
             ),
         }
     )
+
+
 @pytest.fixture
 def union_schema():
     return Union(
@@ -119,8 +123,9 @@ def test_reduce(basic_schema, union_schema):
     assert isinstance(basic_schema, Record)
     assert isinstance(union_schema, Union)
     reducer = SchemaReducer()
-    assert reducer.reduce([basic_schema.__repr__(), basic_schema.__repr__()]) == basic_schema.__repr__()
+    assert (
+        reducer.reduce([basic_schema.__repr__(), basic_schema.__repr__()])
+        == basic_schema.__repr__()
+    )
     ans = reducer.reduce([union_schema.__repr__(), basic_schema.__repr__()])
     assert isinstance(ans, Union)
-
-

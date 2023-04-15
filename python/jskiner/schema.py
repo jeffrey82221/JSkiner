@@ -1,4 +1,5 @@
 from . import jskiner  # noqa: F401
+
 PARALLEL_CNT = 4
 schema_names = [
     "Int",
