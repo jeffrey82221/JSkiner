@@ -80,6 +80,7 @@ schema
 - [X] FIX: make sure __repr__ escape special characters. 
 - [X] Auto Formatting Using Black
 - [X] Enable sampling of json files
-- [ ] Enable Regex to represent patterned FieldSet
+- [X] Debug: show input that causing panick. (alter panic str / alter reduce.py exception logging) 
+- [X] Fix: adding UnionRecord schema object
 - [ ] Enable direct inferencing from API online. (able to avoid repeat download of json)
-- [ ] Debug: show input that causing panick. (alter panic str / alter reduce.py exception logging) 
+- [ ] Enable Regex to represent patterned FieldSet
