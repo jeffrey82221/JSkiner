@@ -193,7 +193,7 @@ impl RustJsonSchema {
                         for jsonschema in l.content.iter() {
                             match &jsonschema {
                                 RustJsonSchema::Union(_) => {
-                                    panic!("Union in Union Error.\n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                    panic!("Union in Union Error.\n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                 },
                                 RustJsonSchema::Unknown(_) => {},
                                 _ => {
@@ -211,13 +211,13 @@ impl RustJsonSchema {
                                         let merged = other.clone().merge(jsonschema.clone());
                                         match merged {
                                             RustJsonSchema::Union(_) => {
-                                                panic!("Merge Array or Record into Union Error. \n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                                panic!("Merge Array or Record into Union Error. \n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                             },
                                             _ => {
                                                 content.insert(merged);
                                                 total_has_same_type += 1;
                                                 if total_has_same_type > 1 {
-                                                    panic!("More than 1 Array or Record Error. \n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                                    panic!("More than 1 Array or Record Error. \n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                                 }
                                             }
                                         }
