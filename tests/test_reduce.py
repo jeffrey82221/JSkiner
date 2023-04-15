@@ -131,8 +131,9 @@ def test_reduce(basic_schema, union_schema, special_schema):
     ans = reducer.reduce([union_schema.__repr__(), union_schema.__repr__()])
     assert isinstance(eval(ans), UnionRecord)
     assert (
-        reducer.reduce([basic_schema.__repr__(), special_schema.__repr__()])
-        == union_schema.__repr__()
+        reducer.reduce(
+            [basic_schema.__repr__(), special_schema.__repr__()]
+        ) == union_schema.__repr__()
     )
     assert (
         reducer.reduce(
@@ -141,8 +142,7 @@ def test_reduce(basic_schema, union_schema, special_schema):
                 special_schema.__repr__(),
                 union_schema.__repr__(),
             ]
-        )
-        == union_schema.__repr__()
+        ) == union_schema.__repr__()
     )
     assert (
         reducer.reduce(
@@ -151,12 +151,10 @@ def test_reduce(basic_schema, union_schema, special_schema):
                 union_schema.__repr__(),
                 special_schema.__repr__(),
             ]
-        )
-        == union_schema.__repr__()
+        ) == union_schema.__repr__()
     )
     assert (
         reducer.reduce(
             [union_schema.__repr__(), basic_schema.__repr__(), basic_schema.__repr__()]
-        )
-        == union_schema.__repr__()
+        ) == union_schema.__repr__()
     )
