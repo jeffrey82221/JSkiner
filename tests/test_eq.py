@@ -1,4 +1,14 @@
-from jskiner.schema import Int, Float, Atomic, Record, Array, Union, Optional, Non
+from jskiner.schema import (
+    Int,
+    Float,
+    Atomic,
+    Record,
+    Array,
+    Union,
+    Optional,
+    Non,
+    UnionRecord,
+)
 
 
 def test_eq():
@@ -11,3 +21,9 @@ def test_eq():
         {"b": Atomic(Float()), "a": Atomic(Int())}
     )
     assert Union({Atomic(Int()), Atomic(Non())}) == Optional(Atomic(Int()))
+    assert UnionRecord(
+        {
+            Record({"a": Atomic(Int()), "b": Atomic(Float())}),
+            Record({"a": Atomic(Int()), "c": Atomic(Float())}),
+        }
+    ) == Record({"a": Atomic(Int()), "b": Atomic(Float()), "c": Atomic(Float())})

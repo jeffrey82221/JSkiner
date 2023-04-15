@@ -193,7 +193,7 @@ impl RustJsonSchema {
                         for jsonschema in l.content.iter() {
                             match &jsonschema {
                                 RustJsonSchema::Union(_) => {
-                                    panic!("Union in Union Error.\n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                    panic!("Union in Union Error.\n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                 },
                                 RustJsonSchema::Unknown(_) => {},
                                 _ => {
@@ -204,20 +204,20 @@ impl RustJsonSchema {
                                     };
                                     if is_same_type {
                                         // TODO:
-                                        // 1. [ ] Must check whether the merged result is 'Union'
+                                        // 1. [X] Must check whether the merged result is 'Union'
                                         // If the merged result is Union, it can lead to "Union in Union Error" later.
-                                        // 2. [ ] total_has_same_type -> merge_count
-                                        // 3. [ ] must avoid repeat merge into more than one element in the left Union.
+                                        // 2. [-] total_has_same_type -> merge_count
+                                        // 3. [X] must avoid repeat merge into more than one element in the left Union.
                                         let merged = other.clone().merge(jsonschema.clone());
                                         match merged {
                                             RustJsonSchema::Union(_) => {
-                                                panic!("Merge Array or Record into Union Error. \n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                                panic!("Merge Array or Record into Union Error. \n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                             },
                                             _ => {
                                                 content.insert(merged);
                                                 total_has_same_type += 1;
                                                 if total_has_same_type > 1 {
-                                                    panic!("More than 1 Array or Record Error. \n self: \n{}\n internal union: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
+                                                    panic!("More than 1 Array or Record Error. \n self: \n{}\n internal schema: \n{}\n other: \n{}\n", self.repr(), jsonschema.repr(), other.repr())
                                                 }
                                             }
                                         }

@@ -1,5 +1,6 @@
 from . import jskiner  # noqa: F401
 
+PARALLEL_CNT = 4
 schema_names = [
     "Int",
     "Float",
@@ -11,6 +12,7 @@ schema_names = [
     "Record",
     "FieldSet",
     "UniformRecord",
+    "UnionRecord",
     "Union",
     "Optional",
     "Unknown",
@@ -39,14 +41,15 @@ def code_gen(class_name):
     class_define_code = f"""
 class {class_name}:
     def __init__(self, *args):
+        self._engine = jskiner.InferenceEngine({PARALLEL_CNT})
         if len(args) == 1:
             if '{class_name}' == 'FieldSet':
                 self.rc = jskiner.{class_name}(args[0])
             else:
                 self.rc = jskiner.{class_name}(convert_py_2_rust(args[0]))
-        elif len(args) == 2:
+        elif len(args) == 2: # UniformRecord
             self.rc = jskiner.{class_name}(convert_py_2_rust(args[0]), convert_py_2_rust(args[1]))
-        else:
+        else: # Int, Float, Unknown, Str, Non, Bool
             self.rc = jskiner.{class_name}()
     def __repr__(self):
         return str(self.rc)
@@ -55,8 +58,7 @@ class {class_name}:
     def __hash__(self):
         return hash(self.__repr__())
     def __or__(self, other):
-        engine = jskiner.InferenceEngine(1)
-        return eval(engine.reduce([self.rc, other.rc]))
+        return eval(self._engine.reduce([self.rc, other.rc]))
 """
     return class_define_code
 
