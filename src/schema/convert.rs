@@ -18,13 +18,13 @@ pub fn py2rust(value: &PyAny) -> RustJsonSchema {
         value.extract::<Optional>(), 
         value.extract::<Unknown>()
     ) {
-        (Ok(atom), _, _, _, _, _, _) => RustJsonSchema::Atomic(atom.rust_obj),
-        (_, Ok(arr), _, _, _, _, _) => RustJsonSchema::Array(arr.rust_obj),
-        (_, _, Ok(rec), _, _, _, _) => RustJsonSchema::Record(rec.rust_obj),
-        (_, _, _, Ok(rec), _, _, _) => RustJsonSchema::Record(rec.rust_obj),
-        (_, _, _, _, Ok(uni), _, _) => RustJsonSchema::Union(uni.rust_obj),
-        (_, _, _, _, _, Ok(uni), _) => RustJsonSchema::Union(uni.rust_obj),
-        (_, _, _, _, _, _, Ok(unk)) => RustJsonSchema::Unknown(unk.rust_obj),
+        (Ok(a), _, _, _, _, _, _) => RustJsonSchema::Atomic(a.rust_obj),
+        (_, Ok(b), _, _, _, _, _) => RustJsonSchema::Array(b.rust_obj),
+        (_, _, Ok(c), _, _, _, _) => RustJsonSchema::Record(c.rust_obj),
+        (_, _, _, Ok(d), _, _, _) => RustJsonSchema::Record(d.rust_obj),
+        (_, _, _, _, Ok(e), _, _) => RustJsonSchema::Union(e.rust_obj),
+        (_, _, _, _, _, Ok(f), _) => RustJsonSchema::Union(f.rust_obj),
+        (_, _, _, _, _, _, Ok(g)) => RustJsonSchema::Unknown(g.rust_obj),
         _ => panic!("Expect Atomic, Array, Record, UniformRecord, Union, Optional, or Unknown")
     };
     rust_schema
