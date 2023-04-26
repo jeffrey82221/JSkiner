@@ -2,7 +2,7 @@
 
 # JSkiner 
 
-The is a python **Js**on **Sch**ema **In**ference **E**ngine with **R**ust's core. Its inferencing speed is about 10 times of its pure-python counterpart ([jsonschema-inference](https://pypi.org/project/jsonschema-inference/)).
+This is a python **Js**on **Sch**ema **In**ference **E**ngine with **R**ust core. Its inferencing speed is about 10 times of its pure-python counterpart ([jsonschema-inference](https://pypi.org/project/jsonschema-inference/)).
 
 # Installation 
 
