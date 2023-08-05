@@ -57,7 +57,7 @@ from jskiner import InferenceEngine
 from jskiner.schema import Atomic, Int, Non
 cpu_cnt = 16
 engine = InferenceEngine(cpu_cnt)
-schema = engine.run([Atomic(Int()), Atomic(Non)])
+schema = engine.run([Atomic(Int()), Atomic(Non()])
 schema
 ```
 >> Optional(Atomic(Int()))
