@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        py-arg: ['3.7.16 3.7', '3.8.16 3.8', '3.9.19 3.9', '3.10.14 3.10', '3.11.0 3.11', '3.12.0 3.12', '3.13.0 3.13', '3.14.0 3.14']
+        py-arg: ['3.8.16 3.8', '3.9.19 3.9', '3.10.14 3.10', '3.11.0 3.11', '3.12.0 3.12', '3.13.0 3.13', '3.14.0 3.14']
     steps:
       - uses: actions/checkout@v5
       - name: Build 
@@ -53,7 +53,7 @@ jobs:
     runs-on: macos-26-intel
     strategy:
       matrix:
-        py-arg: ['cp37', 'cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
+        py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
         os-arg: ['x86_64']
     steps:
       - uses: actions/checkout@v5
