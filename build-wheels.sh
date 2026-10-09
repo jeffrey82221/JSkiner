@@ -5,13 +5,9 @@ cat /etc/*-release
 python --version
 yum update -y
 yum install epel-release -y
-# Install Rust and Cargo
-yum makecache
-yum -y install rust
-yum -y install cargo
 # Install Python
 yum install gcc openssl-devel bzip2-devel libffi-devel zlib-devel xz-devel 
- yum install curl -y
+yum install curl -y
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
 export PATH="$HOME/.cargo/bin:$PATH"
 cd /usr/src
