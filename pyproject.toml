@@ -8,9 +8,12 @@ requires-python = ">=3.7"
 version = "0.1.1"
 classifiers = [
     "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: Implementation :: CPython"
 ]
+
+[project.urls]
+documentation = "https://github.com/jeffrey82221/JSkiner/tree/doc/project#readme"
+repository = "https://github.com/jeffrey82221/JSkiner"
 
 [tool.maturin]
 python-source = "python"
