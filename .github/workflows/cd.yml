@@ -4,6 +4,8 @@ on:
     types: [closed]
     branches:
       - main
+permissions:
+  contents: read
 jobs:
   build-linux-wheels:
     name: Build Linux wheels
