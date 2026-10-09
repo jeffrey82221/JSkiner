@@ -90,11 +90,7 @@ jobs:
          mv wheelhouse/*.whl dist/
          ls
          ls dist
-      - name: Upload Wheels
-        env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME}}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD}}
+      - name: Check wheels
         run: |
           pip install twine
-          pip install pexpect
-          python -m twine upload dist/*.whl
+          python -m twine check dist/*.whl
