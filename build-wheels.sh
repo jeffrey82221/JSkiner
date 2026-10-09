@@ -11,6 +11,9 @@ yum -y install rust
 yum -y install cargo
 # Install Python
 yum install gcc openssl-devel bzip2-devel libffi-devel zlib-devel xz-devel 
+ yum install curl -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+export PATH="$HOME/.cargo/bin:$PATH"
 cd /usr/src
 wget https://www.python.org/ftp/python/$1/Python-$1.tgz
 tar xzf Python-$1.tgz 
@@ -25,9 +28,9 @@ yum install python3-pip -y
 rpm -qa | grep -i python3-pip
 pip3 -V
 # Install python packages
-python$2 -m pip3 install --upgrade pip
-python$2 -m pip3 install -e .
-python$2 -m pip3 install build --upgrade
+python$2 -m pip install --upgrade pip
+python$2 -m pip install -e .
+python$2 -m pip install build --upgrade
 # Test Package:
 cd /io
 cd examples
@@ -38,5 +41,5 @@ python$2 -m build
 cd dist
 ls
 # Repair wheel
-python$2 -m pip3 install auditwheel
+python$2 -m pip install auditwheel
 auditwheel repair *.whl
