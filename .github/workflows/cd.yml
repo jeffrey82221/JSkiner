@@ -66,6 +66,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.os-arg }} 
           CIBW_BUILD: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
+          MACOSX_DEPLOYMENT_TARGET: "10.12"
       - name: Cache
         uses: actions/upload-artifact@v7
         with:
