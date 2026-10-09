@@ -23,8 +23,8 @@ jobs:
           name: ${{ matrix.py-arg }} wheel
           path: dist/wheelhouse/*-manylinux*.whl
   build-macos-arm64-wheel:
-    name: Build arm64 wheels on macos-14
-    runs-on: macos-14
+    name: Build arm64 wheels on macos-26
+    runs-on: macos-26
     strategy:
       matrix:
         py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
@@ -47,8 +47,8 @@ jobs:
           name: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
           path: wheelhouse/*.whl
   build-macos-x86-wheel:
-    name: Build x86 wheels on macos-13
-    runs-on: macos-13
+    name: Build x86 wheels on macos-26-intel
+    runs-on: macos-26-intel
     strategy:
       matrix:
         py-arg: ['cp37', 'cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
