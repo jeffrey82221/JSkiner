@@ -74,7 +74,6 @@ jobs:
           path: wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
     needs: [build-linux-wheels, build-macos-arm64-wheel, build-macos-x86-wheel]
     steps:
       - name: start deploying
