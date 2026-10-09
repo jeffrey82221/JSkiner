@@ -7,12 +7,10 @@ class InferenceEngine:
         self._engine = jskiner.InferenceEngine(cpu_cnt)
 
     def run(self, batch):
-        exec("from jskiner.schema import *")
-        return eval(self._engine.run(batch))
+        return eval(self._engine.run(batch), vars(schema))
 
     def reduce(self, schema_list):
-        exec("from jskiner.schema import *")
-        return eval(self._engine.reduce([s.rc for s in schema_list]))
+        return eval(self._engine.reduce([s.rc for s in schema_list]), vars(schema))
 
 
 __doc__ = jskiner.__doc__
