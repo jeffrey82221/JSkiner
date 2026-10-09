@@ -3,14 +3,14 @@ use super::num::RustNum;
 use super::convert::py2rust;
 ////////////////// PyObjs ///////////////////
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Atomic {
     pub rust_obj: RustAtomic,
 }
 #[pymethods]
 impl Atomic {
     #[new]
-    fn new(obj: &PyAny) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PyAny>) -> PyResult<Self> {
         Ok(Atomic { rust_obj: py2rust(obj) })
     }
     fn __repr__(&self) -> String {
@@ -18,7 +18,7 @@ impl Atomic {
     }
 }
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Non {
     pub rust_obj: RustNon,
 }
@@ -33,7 +33,7 @@ impl Non {
     }
 }
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Str {
     pub rust_obj: RustStr,
 }
@@ -48,7 +48,7 @@ impl Str {
     }
 }
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Bool {
     pub rust_obj: RustBool,
 }

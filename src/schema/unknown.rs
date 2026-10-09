@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Unknown {
     pub rust_obj: RustUnknown,
 }

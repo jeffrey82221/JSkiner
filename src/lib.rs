@@ -29,22 +29,21 @@ impl InferenceEngine {
         };
         Ok(InferenceEngine { rust_obj: RustInferenceEngine::new(set_cnt)})
     }
-    fn run(&self, batch: &PyList) -> String {
-        let vec: Vec<&str> = (0..batch.len())
-            .map(|i| batch.get_item(i).unwrap().extract::<&str>().unwrap())
+    fn run(&self, batch: &Bound<'_, PyList>) -> String {
+        let vec: Vec<String> = batch
+            .iter()
+            .map(|item| item.extract::<String>().unwrap())
             .collect();
-        self.rust_obj.infer(vec)
+        self.rust_obj
+            .infer(vec.iter().map(String::as_str).collect())
     }
-    fn reduce(&self, batch: &PyList) -> String {
-        let s_vec: Vec<RustJsonSchema> = (0..batch.len())
-            .map(|i| batch.get_item(i).unwrap().extract::<&PyAny>().unwrap())
-            .map(|s| py2rust(s))
-            .collect();
+    fn reduce(&self, batch: &Bound<'_, PyList>) -> String {
+        let s_vec: Vec<RustJsonSchema> = batch.iter().map(|s| py2rust(&s)).collect();
         reduce(s_vec).repr()
     }
 }
 #[pymodule]
-fn jskiner( _py: Python, m: &PyModule ) -> PyResult<()> {
+fn jskiner( _py: Python<'_>, m: &Bound<'_, PyModule> ) -> PyResult<()> {
     m.add_class::<InferenceEngine>()?;
     m.add_class::<Int>()?;
     m.add_class::<Float>()?;

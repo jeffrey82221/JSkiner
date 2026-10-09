@@ -6,7 +6,7 @@ use super::top::RustJsonSchema;
 use super::convert::py2rust;
 //////////////// Python Objs ////////////////////////
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Union {
     pub rust_obj: RustUnion,
 }
@@ -14,12 +14,12 @@ pub struct Union {
 #[pymethods]
 impl Union {
     #[new]
-    fn new(obj: &PySet) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PySet>) -> PyResult<Self> {
         let mut content = HashSet::new();
         let mut cnt: u32 = 0;
         for value in obj.iter() {
             cnt += 1;
-            content.insert(py2rust(value));
+            content.insert(py2rust(&value));
         }
         if cnt < 2 {
             panic!("# of content of Union should >= 2")
@@ -31,7 +31,7 @@ impl Union {
     }
 }
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Optional {
     pub rust_obj: RustUnion,
 }
@@ -39,7 +39,7 @@ pub struct Optional {
 #[pymethods]
 impl Optional {
     #[new]
-    fn new(obj: &PyAny) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PyAny>) -> PyResult<Self> {
         let mut content = HashSet::new();
         let rust_schema = py2rust(obj);
         content.insert(rust_schema);

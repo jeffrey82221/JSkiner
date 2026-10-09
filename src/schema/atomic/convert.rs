@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 use super::atomic::{RustAtomic, Str, Non, Bool};
 use super::num::{RustNum, Int, Float};
-pub fn py2rust(obj: &PyAny) -> RustAtomic {
+pub fn py2rust(obj: &Bound<'_, PyAny>) -> RustAtomic {
     /*
     Convert PyAny to its Rust Counterpart: 
     */
