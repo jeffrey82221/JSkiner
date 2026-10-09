@@ -5,7 +5,7 @@ use super::array::Array;
 use super::record::{Record, UniformRecord, UnionRecord};
 use super::unions::{Union, Optional};
 use super::unknown::Unknown;
-pub fn py2rust(value: &PyAny) -> RustJsonSchema {
+pub fn py2rust(value: &Bound<'_, PyAny>) -> RustJsonSchema {
     /*
     Convert PyAny to its Rust Counterpart: 
     */

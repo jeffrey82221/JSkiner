@@ -9,7 +9,7 @@ use crate::op::reduce::reduce;
 
 ////////////// PyObjs ///////////////////
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Record {
     pub rust_obj: RustRecord,
 }
@@ -17,11 +17,11 @@ pub struct Record {
 #[pymethods]
 impl Record {
     #[new]
-    fn new(obj: &PyDict) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PyDict>) -> PyResult<Self> {
         let mut content = HashMap::new();
         for (key, schema) in obj.iter() {
             let key_str: String = key.extract().unwrap();
-            content.insert(key_str, py2rust(schema));
+            content.insert(key_str, py2rust(&schema));
         }
         Ok(Record { rust_obj: RustRecord::new(content)})
     }
@@ -31,7 +31,7 @@ impl Record {
 }
 
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct UniformRecord {
     pub rust_obj: RustRecord,
 }
@@ -39,7 +39,7 @@ pub struct UniformRecord {
 #[pymethods]
 impl UniformRecord {
     #[new]
-    fn new(field_set: FieldSet, schema: &PyAny) -> PyResult<UniformRecord> {
+    fn new(field_set: FieldSet, schema: &Bound<'_, PyAny>) -> PyResult<UniformRecord> {
         let mut content = HashMap::new();
         let rust_schema = py2rust(schema);
         for key_str in field_set.rust_obj.content.iter() {
@@ -53,7 +53,7 @@ impl UniformRecord {
 }
 
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct FieldSet {
     pub rust_obj: RustFieldSet,
 }
@@ -61,7 +61,7 @@ pub struct FieldSet {
 #[pymethods]
 impl FieldSet {
     #[new]
-    fn new(obj: &PySet) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PySet>) -> PyResult<Self> {
         let mut fields = HashSet::new();
         for item in obj.iter() {
             let field = item.to_string();
@@ -74,19 +74,19 @@ impl FieldSet {
     }
 }
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct UnionRecord {
     pub rust_obj: RustRecord,
 }
 #[pymethods]
 impl UnionRecord {
     #[new]
-    fn new(obj: &PySet) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PySet>) -> PyResult<Self> {
         let mut records = Vec::<RustJsonSchema>::new();
         let mut cnt: u32 = 0;
         for schema in obj.iter() {
             cnt += 1;
-            let r_schema = py2rust(schema);
+            let r_schema = py2rust(&schema);
             match r_schema {
                 RustJsonSchema::Record(_) => {
                     records.push(r_schema);
@@ -406,4 +406,3 @@ mod tests {
         assert_eq!(add_escape(&String::from("\t")), String::from("\\t"));
     }
 }
-

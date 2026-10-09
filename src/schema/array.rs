@@ -2,14 +2,14 @@ use pyo3::prelude::*;
 use super::convert::py2rust;
 use super::top::RustJsonSchema;
 #[derive(Clone)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Array {
     pub rust_obj: RustArray,
 }
 #[pymethods]
 impl Array {
     #[new]
-    fn new(obj: &PyAny) -> PyResult<Self> {
+    fn new(obj: &Bound<'_, PyAny>) -> PyResult<Self> {
         Ok(Array { rust_obj: RustArray{content: Box::new(py2rust(obj))} })
     }
     fn __repr__(&self) -> String {

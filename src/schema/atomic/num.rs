@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 ////////////////// PyObjs ///////////////////
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Float {
     pub rust_obj: RustFloat,
 }
@@ -17,7 +17,7 @@ impl Float {
 }
 
 #[derive(Clone, Copy)]
-#[pyclass]
+#[pyclass(from_py_object)]
 pub struct Int {
     pub rust_obj: RustInt,
 }

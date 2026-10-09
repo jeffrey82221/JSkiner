@@ -4,119 +4,89 @@ on:
     types: [closed]
     branches:
       - main
+permissions:
+  contents: read
 jobs:
   build-linux-wheels:
     name: Build Linux wheels
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        py-arg: ['3.7.16 3.7', '3.8.16 3.8', '3.9.16 3.9', '3.10.10 3.10']
+        py-arg: ['3.8.16 3.8', '3.9.19 3.9', '3.10.14 3.10', '3.11.0 3.11', '3.12.0 3.12', '3.13.0 3.13', '3.14.0 3.14']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       - name: Build 
         run: |
           docker run --rm -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 bash \
             /io/build-wheels.sh ${{ matrix.py-arg }}
       - name: Cache
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.py-arg }} wheel
           path: dist/wheelhouse/*-manylinux*.whl
   build-macos-arm64-wheel:
-    name: Build arm64 wheels on macos-11
-    runs-on: macos-11
+    name: Build arm64 wheels on macos-26
+    runs-on: macos-26
     strategy:
       matrix:
-        py-arg: ['cp38', 'cp39', 'cp310']
+        py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
         os-arg: ['arm64']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Install Rust Dependency
         run: |
+         rustup update stable
+         rustup default stable
          rustup target add aarch64-apple-darwin
       - name: Build
-        uses: pypa/cibuildwheel@v2.12.1
+        uses: pypa/cibuildwheel@v3.2.0
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.os-arg }} 
           CIBW_BUILD: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
       - name: Cache
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
           path: wheelhouse/*.whl
   build-macos-x86-wheel:
-    name: Build x86 wheels on macos-11
-    runs-on: macos-11
+    name: Build x86 wheels on macos-26-intel
+    runs-on: macos-26-intel
     strategy:
       matrix:
-        py-arg: ['cp37', 'cp38', 'cp39', 'cp310']
+        py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
         os-arg: ['x86_64']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+      - name: Update Rust toolchain
+        run: |
+          rustup update stable
+          rustup default stable
       - name: Build
-        uses: pypa/cibuildwheel@v2.12.1
+        uses: pypa/cibuildwheel@v3.2.0
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.os-arg }} 
           CIBW_BUILD: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
       - name: Cache
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.py-arg }}-macosx_${{ matrix.os-arg }}
           path: wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     needs: [build-linux-wheels, build-macos-arm64-wheel, build-macos-x86-wheel]
     steps:
       - name: start deploying
-        uses: actions/checkout@v2
-      - name: load py37 wheel
-        uses: actions/download-artifact@v2
-        with: 
-          name: 3.7.16 3.7 wheel
-      - name: load py38 wheel
-        uses: actions/download-artifact@v2
-        with: 
-          name: 3.8.16 3.8 wheel
-      - name: load py39 wheel
-        uses: actions/download-artifact@v2
-        with: 
-          name: 3.9.16 3.9 wheel
-      - name: load py310 wheel
-        uses: actions/download-artifact@v2
-        with: 
-          name: 3.10.10 3.10 wheel
-      - name: load cp37-macosx_x86_64
-        uses: actions/download-artifact@v2
+        uses: actions/checkout@v5
+      - name: Download wheels
+        uses: actions/download-artifact@v8
         with:
-          name: cp37-macosx_x86_64
-      - name: load cp38-macosx_x86_64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp38-macosx_x86_64
-      - name: load cp39-macosx_x86_64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp39-macosx_x86_64
-      - name: load cp310-macosx_x86_64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp310-macosx_x86_64
-      - name: load cp38-macosx_arm64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp38-macosx_arm64
-      - name: load cp39-macosx_arm64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp39-macosx_arm64
-      - name: load cp310-macosx_arm64
-        uses: actions/download-artifact@v2
-        with:
-          name: cp310-macosx_arm64
+         path: wheelhouse
+         merge-multiple: true
       - name: move wheel
         run: | 
          mkdir dist
-         mv *.whl dist/
+         mv wheelhouse/*.whl dist/
          ls
          ls dist
       - name: Upload Wheels
