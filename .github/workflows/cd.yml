@@ -1,8 +1,11 @@
 name: Continuous Deployment
 # Runs on PRs to main (test flow: build wheels); on merge, also deploys to PyPI.
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
     branches:
       - main
 permissions:
@@ -11,7 +14,6 @@ jobs:
   build-linux-wheels:
     name: Build Linux wheels
     runs-on: ubuntu-latest
-    if: github.event.action != 'closed' || github.event.pull_request.merged == true
     strategy:
       matrix:
         py-arg: ['3.8.16 3.8', '3.9.19 3.9', '3.10.14 3.10', '3.11.0 3.11', '3.12.0 3.12', '3.13.0 3.13', '3.14.0 3.14']
@@ -29,7 +31,6 @@ jobs:
   build-macos-arm64-wheel:
     name: Build arm64 wheels on macos-26
     runs-on: macos-26
-    if: github.event.action != 'closed' || github.event.pull_request.merged == true
     strategy:
       matrix:
         py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
@@ -54,7 +55,6 @@ jobs:
   build-macos-x86-wheel:
     name: Build x86 wheels on macos-26-intel
     runs-on: macos-26-intel
-    if: github.event.action != 'closed' || github.event.pull_request.merged == true
     strategy:
       matrix:
         py-arg: ['cp38', 'cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
@@ -78,7 +78,7 @@ jobs:
           path: wheelhouse/*.whl
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'push'
     needs: [build-linux-wheels, build-macos-arm64-wheel, build-macos-x86-wheel]
     steps:
       - name: start deploying
